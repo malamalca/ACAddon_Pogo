@@ -250,6 +250,7 @@ void PogoDataDialog::OnDeleteQtyClick()
 	PogoElementWithData selectedElement = selectedElements.Get(cbElements.GetSelectedItem() - 1);
 	PogoQtiesList selectedQties;
 	GS::Array<short> selectedListItems = lsQties.GetSelectedItems();
+	GSErr err;
 
 	for (short i = (short)selectedListItems.GetSize(); i > 0; i--) {
 		short qtyToDelete = selectedListItems[i - 1] - 1;
@@ -268,11 +269,19 @@ void PogoDataDialog::OnDeleteQtyClick()
 			}
 			selectedElement.qties->count--;
 
-			selectedElement.UpdateQties();
+			err = ACAPI_CallUndoableCommand("Delete Qty(es)", [&selectedElement]() -> GSErrCode {
+				if (selectedElement.UpdateQties()) {
+					return NoError;
+				}
+				return -1;
+			});
+			
 			lsQties.DeleteItem(selectedListItems[i - 1]);
 		}
 		selectedQties.Clear();
 	}
+
+	UpdateInterface();
 }
 
 void PogoDataDialog::OnEditQtyClick()
@@ -297,7 +306,7 @@ void PogoDataDialog::OnEditQtyClick()
 			if (selectedElement.UpdateQties()) {
 				return NoError;
 			}
-			return false;
+			return -1;
 		});
 
 		if (err == NoError) {

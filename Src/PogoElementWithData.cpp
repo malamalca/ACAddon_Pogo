@@ -227,21 +227,26 @@ bool PogoElementWithData::UpdateQties()
 	BNZeroMemory(&head, sizeof(API_Elem_Head));
 	head.guid = guid;
 
-	if (ACAPI_Element_DeleteUserData(&head) == NoError) {
-		PogoLinkedQties linkedQties;
-		BNZeroMemory(&linkedQties, sizeof(PogoLinkedQties));
-		BNCopyMemory(&linkedQties, qties, sizeof(PogoLinkedQties));
+	GSErr err;
 
-		API_ElementUserData userData;
-		BNZeroMemory(&userData, sizeof(API_ElementUserData));
+	err = ACAPI_Element_DeleteUserData(&head);
+	if (err == NoError) {
+		if (qties->count > 0) {
+			PogoLinkedQties linkedQties;
+			BNZeroMemory(&linkedQties, sizeof(PogoLinkedQties));
+			BNCopyMemory(&linkedQties, qties, sizeof(PogoLinkedQties));
 
-		userData.dataVersion = 1;
-		userData.platformSign = GS::Act_Platform_Sign;
-		userData.flags = APIUserDataFlag_FillWith | APIUserDataFlag_Pickup;
-		userData.dataHdl = BMAllocateHandle(sizeof(linkedQties), ALLOCATE_CLEAR, 0);
-		*reinterpret_cast<PogoLinkedQties*> (*userData.dataHdl) = linkedQties;
+			API_ElementUserData userData;
+			BNZeroMemory(&userData, sizeof(API_ElementUserData));
 
-		ACAPI_Element_SetUserData(&head, &userData);
+			userData.dataVersion = 1;
+			userData.platformSign = GS::Act_Platform_Sign;
+			userData.flags = APIUserDataFlag_FillWith | APIUserDataFlag_Pickup;
+			userData.dataHdl = BMAllocateHandle(sizeof(linkedQties), ALLOCATE_CLEAR, 0);
+			*reinterpret_cast<PogoLinkedQties*> (*userData.dataHdl) = linkedQties;
+
+			ACAPI_Element_SetUserData(&head, &userData);
+		}
 
 		return true;
 	}
