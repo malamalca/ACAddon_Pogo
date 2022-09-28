@@ -1,0 +1,166 @@
+﻿/* *****************************************************************************
+// Localizable resource description for the Pogo ARCHICAD Add-On
+// API Development Kit; Mac/Win
+//
+// Namespaces:		Contact person:
+//		-None-
+//
+// [SG compatible] - Yes
+// ****************************************************************************/
+
+#include "ResourceIDs.h"
+
+'STR#' ID_ADDON_INFO "Add-on Name and Description" {
+/* [  1] */		"Pogo"
+/* [  2] */		"Pogo Project Schedules"
+}
+
+'STR#' ID_MENU_STRINGS "Menu strings" {
+/* [   ] */		"Pogo"
+/* [   ] */		"Commands"
+/* [  1] */			"Attach New Qty"
+/* [  2] */			"Show Associated Qties"
+/* [  3] */			"-"
+/* [  4] */			"Send Qties Updates"
+/* [  5] */			"Delete Assoc Qties"
+/* [  6] */			"-"
+/* [  7] */			"Settings"
+}
+
+'STR#' ID_MENU_PROMPT_STRINGS "Prompt strings" {
+/* [   ] */		"Pogo"
+/* [   ] */		"Commands"
+/* [  1] */			"Add new qty to a pogo item"
+/* [  2] */			"Show associated qties dialog"
+/* [  3] */			"-"
+/* [  4] */			"Send qties updates to pogo"
+/* [  5] */			"Delete attached qties from selected elements"
+/* [  6] */			"-"
+/* [  7] */			"Show settings dialog"
+}
+
+
+/* *****************************************************************************
+// Pogo Data Modal
+// ****************************************************************************/
+'GDLG' ID_POGO_DATA_MODAL  Modal | normalFrame | noGrow    0    0 400  400  "" {
+/* [  1] */	LeftText          5    5   150   18    LargePlain  vCenter  "AC Elements:"
+/* [  2] */ PopupControl      5   23   390   25    290    4									/* Select Archicad Element */
+/* [  3] */	LeftText          5   50   150   18    LargePlain  vCenter  "Qties:"
+/* [  4] */ MultiSelList      5   68   390  110    LargePlain PartialItems VScroll  25 HasHeader 25
+/* [  5] */ Button            5   190   50   20    LargePlain  "Close"						/* Close Button */
+
+/* [  6] */ Button            250  190   20   20    LargePlain  "Sync"						/* Sync Button */
+/* [  7] */ Button            275  190   20   20    LargePlain  "Del"						/* Delete Button */
+/* [  8] */ Button            300  190   20   20    LargePlain  "Edit"						/* Edit Button */
+}
+
+'DLGH'  ID_POGO_DATA_MODAL  DLG_POGO_DATA_Help {
+1	""							LeftText_1
+2	""							PopupControl_1
+3	""							LeftText_2
+4	""							MultiSelList_1
+5	""							Button_1
+6	""							Button_2
+7	""							Button_3
+8	""							Button_4
+}
+
+/* *****************************************************************************
+// Pogo Select Item Modal
+// ****************************************************************************/
+'GDLG' ID_POGO_ITEMSELECT_MODAL  Modal | vGrow    0    0	   400  400  "Select Item" {
+/* [  1] */	LeftText          5    5   150   18    LargePlain  vCenter  "Category:"
+/* [  2] */ PopupControl      5   23   390   25    290    4									/* Select Category Combo */
+/* [  3] */	LeftText          5   50   150   18    LargePlain  vCenter  "Section:"
+/* [  4] */ PopupControl      5   68   390   25    290    4									/* Select Section Combo */
+/* [  5] */	LeftText          5   95   150   18    LargePlain  vCenter  "Items:"
+/* [  6] */ SingleSelList     5  115   390  200    LargePlain PartialItems  40
+/* [  7] */ Button            5   350   50   30    LargePlain  "Next"						/* OK Button */
+/* [  8] */ Button            60  350   50   30    LargePlain  "Cancel"						/* Cancel Button */
+}
+
+'DLGH'  ID_POGO_ITEMSELECT_MODAL  DLG_ITEMSELECT_Help {
+1	""							LeftText_1
+2	""							PopupControl_1
+3	""							LeftText_2
+4	""							PopupControl_2
+5	""							LeftText_3
+6	""							SingleSelList_1
+7	""							Button_1
+8	""							Button_2
+}
+
+/* *****************************************************************************
+// Pogo Qty Formula Modal
+// ****************************************************************************/
+'GDLG' ID_POGO_QTYFORMULA_MODAL  Modal | vGrow    0    0	   400  400  "Enter Formula" {
+/* [  1] */	LeftText          5   5    150   15    LargePlain  vCenter  "Item:"
+/* [  2] */	LeftText          5   20   390   40    LargePlain  vCenter  ""					/* Item Descript */
+/* [  3] */	LeftText          5   65   150   15    LargePlain  vCenter  "Descript:"
+/* [  4] */	TextEdit          5   80   390   20    LargePlain  36							/* Qty Descript Input */
+/* [  5] */	LeftText          5   105  150   18    LargePlain  vCenter  "Formula:"
+/* [  6] */ MultiLineEdit     5   125  390   60    LargePlain  VScroll						/* Formula Input */
+/* [  7] */	LeftText          5   190  150   15    LargePlain  vCenter  "Calculated value:"
+/* [  8] */	TextEdit          5   205  300   20    LargePlain  36							/* Value Read-Only Input */
+/* [  9] */ Button            310 205   85   20    LargePlain  "Recalc"						/* Recalc Button */
+/* [ 10] */ Button            5   235   50   30    LargePlain  "Ok"							/* OK Button */
+/* [ 11] */ Button            60  235   50   30    LargePlain  "Cancel"						/* Cancel Button */
+}
+
+'DLGH'  ID_POGO_QTYFORMULA_MODAL  DLG_QTYFORMULA_Help {
+1	""							LeftText_1
+2	""							LeftText_2
+3	""							LeftText_3
+4	""							TextEdit_1
+5	""							LeftText_4
+6	""							MultiLineEdit_1
+7	""							LeftText_5
+8	""							TextEdit_2
+9	""							Button_1
+10	""							Button_2
+11	""							Button_3
+}
+
+
+/* *****************************************************************************
+// Pogo SETTINGS Modal
+// ****************************************************************************/
+'GDLG' ID_POGO_SETTINGS_MODAL  Modal | vGrow    0    0	   400  220  "Pogo Settings" {
+/* [  1] */	LeftText          5   5    150   15    LargePlain  vCenter  "Project Id:"
+/* [  2] */	TextEdit          5   20   390   20    LargePlain  36							/* Project Id Input */
+/* [  3] */	LeftText          5   45   150   15    LargePlain  vCenter  "Host:"
+/* [  4] */	TextEdit          5   60   390   20    LargePlain  36							/* Host Input */
+/* [  5] */	LeftText          5   85   150   15    LargePlain  vCenter  "Username:"
+/* [  6] */	TextEdit          5   100   390   20    LargePlain  36							/* Username Input */
+/* [  7] */	LeftText          5   125  150   15    LargePlain  vCenter  "Password:"
+/* [  8] */	TextEdit          5   140  390   20    LargePlain  36							/* Password Input */
+/* [  9] */ Button            5   175   50   30    LargePlain  "Ok"							/* OK Button */
+/* [ 10] */ Button            60  175   50   30    LargePlain  "Cancel"						/* Cancel Button */
+}
+
+'DLGH'  ID_POGO_SETTINGS_MODAL  DLG_SETTINGS_Help {
+1	""							LeftText_1
+2	""							TextEdit_1
+3	""							LeftText_2
+4	""							TextEdit_2
+5	""							LeftText_3
+6	""							TextEdit_3
+7	""							LeftText_4
+8	""							TextEdit_4
+9	""							Button_1
+10	""							Button_2
+}
+
+/* *****************************************************************************
+// Message Dialog
+// ****************************************************************************/
+'GDLG'	ID_POGO_SHOWMESSAGE	Modal		 0  0 200 100		"Pogo" {
+/* [  1] */ Button				70  65    70   24    LargePlain		      "OK"
+/* [  2] */ CenterText           5  20   195   18    LargePlain  vCenter  ""
+}
+
+'DLGH'  ID_POGO_SHOWMESSAGE  DLG_SHOWMESSAGE_Help {
+1	""							Button_0
+2	""							CenterText_1
+}

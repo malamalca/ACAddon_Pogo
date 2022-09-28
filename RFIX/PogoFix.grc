@@ -1,0 +1,24 @@
+﻿/* *****************************************************************************
+// Non-localizable resource description for the Pogo ARCHICAD Add-On
+// API Development Kit; Mac/Win
+//
+// Namespaces:		Contact person:
+//		-None-
+//
+// [SG compatible] - Yes
+// ****************************************************************************/
+
+#include "ResourceIDs.h"
+
+/* TODO: replace the first ID with your developer ID and the second ID with */
+/*       your local ID                                                      */
+
+'MDID' 32500 "Add-On Identifier" {
+	1211329892
+	1605331586
+}
+
+
+'GICN' ID_MENU_ICON "This icon will appear on the menu" {
+	"MenuIcon"
+}

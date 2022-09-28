@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{37856728-77DB-42E0-AD54-20803E4E2FC7}</ProjectGuid>
+    <ProjectName>Pogo</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(LocalAppData)\Microsoft\VisualStudio\10.0\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(LocalAppData)\Microsoft\VisualStudio\10.0\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(LocalAppData)\Microsoft\VisualStudio\10.0\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(LocalAppData)\Microsoft\VisualStudio\10.0\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IntDir>Build\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>Build\$(Platform)\$(Configuration)\</OutDir>
+    <TargetExt>.apx</TargetExt>
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IntDir>Build\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>Build\$(Platform)\$(Configuration)\</OutDir>
+    <TargetExt>.apx</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Dev\cpp\openssl-1.1.1d\include;C:\Dev\cpp\curl-7.85.0\include;..\..\..\Support\Inc;..\..\..\Support\Modules\GSRoot;..\..\..\Support\Modules\GSRoot\STL\imp;..\..\..\Support\Modules\GSUtils;..\..\..\Support\Modules\DGLib;..\..\..\Support\Modules\GX;..\..\..\Support\Modules\GXImage;..\..\..\Support\Modules\GXImageBase;..\..\..\Support\Modules\DGGraphix;..\..\..\Support\Modules\Graphix;..\..\..\Support\Modules\TextEngine;..\..\..\Support\Modules\InputOutput;..\..\..\Support\Modules\UCLib;..\..\..\Support\Modules\UDLib;..\..\..\Support\Modules\Pattern;..\..\..\Support\Modules\VBAttrDialogs;..\..\..\Support\Modules\RS;..\..\..\Support\Modules\HTTP;..\..\..\Support\Modules\Network;..\..\..\Support\Modules\SecureCommunication;..\..\..\Support\Modules\GSXML;..\..\..\Support\Modules\GSXMLUtils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>POGO_USE_CURL;CURL_STATICLIB;WIN32;DEBUG;_DEBUG;WINDOWS;_WINDOWS;_USRDLL;_STLP_DONT_FORCE_MSVC_LIB_NAME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>$(IntDir)</BrowseInformationFile>
+      <CallingConvention>FastCall</CallingConvention>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <OutputFile>$(OutDir)$(ProjectName).apx</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
+      <SubSystem>NotSet</SubSystem>
+      <EntryPointSymbol>DllMainEntry</EntryPointSymbol>
+      <TargetMachine>MachineX64</TargetMachine>
+      <ImportLibrary>
+      </ImportLibrary>
+      <LinkDLL>true</LinkDLL>
+      <AdditionalOptions>/export:GetExportedFuncAddrs,%401 /export:SetImportedFuncAddrs,%402 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>C:\Dev\cpp\ssl\openssl-1.1.1d\x64\lib;C:\Dev\cpp\curl-7.85.0\build\Win64\VC14.10\LIB Debug - LIB OpenSSL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>crypt32.lib;wldap32.lib;ws2_32.lib;libcrypto.lib;libssl.lib;libcurld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\Support\Inc;..\..\..\Support\Modules\GSRoot;..\..\..\Support\Modules\GSRoot\STL\imp;..\..\..\Support\Modules\GSUtils;..\..\..\Support\Modules\DGLib;..\..\..\Support\Modules\GX;..\..\..\Support\Modules\GXImage;..\..\..\Support\Modules\GXImageBase;..\..\..\Support\Modules\DGGraphix;..\..\..\Support\Modules\Graphix;..\..\..\Support\Modules\TextEngine;..\..\..\Support\Modules\InputOutput;..\..\..\Support\Modules\UCLib;..\..\..\Support\Modules\UDLib;..\..\..\Support\Modules\Pattern;..\..\..\Support\Modules\VBAttrDialogs;..\..\..\Support\Modules\RS;..\..\..\Support\Modules\HTTP;..\..\..\Support\Modules\Network;..\..\..\Support\Modules\SecureCommunication;..\..\..\Support\Modules\GSXMLUtils;%(AdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>CURL_STATICLIB;WIN32;NDEBUG;WINDOWS;_WINDOWS;_USRDLL;_STLP_DONT_FORCE_MSVC_LIB_NAME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <BrowseInformationFile>$(IntDir)</BrowseInformationFile>
+      <CallingConvention>FastCall</CallingConvention>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <OutputFile>$(OutDir)$(ProjectName).apx</OutputFile>
+      <SubSystem>NotSet</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EntryPointSymbol>DllMainEntry</EntryPointSymbol>
+      <TargetMachine>MachineX64</TargetMachine>
+      <ImportLibrary>
+      </ImportLibrary>
+      <LinkDLL>true</LinkDLL>
+      <AdditionalOptions>/export:GetExportedFuncAddrs,%401 /export:SetImportedFuncAddrs,%402 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\APIEnvir.h" />
+    <ClInclude Include="Src\APICommon.h" />
+    <ClInclude Include="Src\CMathParser.h" />
+    <ClInclude Include="Src\dlgPogoData.hpp" />
+    <ClInclude Include="Src\dlgPogoItemSelect.hpp" />
+    <ClInclude Include="Src\dlgPogoQtyFormula.hpp" />
+    <ClInclude Include="Src\dlgPogoSettings.hpp" />
+    <ClInclude Include="Src\PogoCategoriesList.hpp" />
+    <ClInclude Include="Src\PogoCategory.hpp" />
+    <ClInclude Include="Src\PogoElementsList.hpp" />
+    <ClInclude Include="src\PogoElementWithData.hpp" />
+    <ClInclude Include="Src\PogoHttpClient.hpp" />
+    <ClInclude Include="Src\PogoItem.hpp" />
+    <ClInclude Include="Src\PogoItemsList.hpp" />
+    <ClInclude Include="Src\PogoPalette.h" />
+    <ClInclude Include="Src\PogoQtiesList.hpp" />
+    <ClInclude Include="Src\PogoSection.hpp" />
+    <ClInclude Include="Src\PogoSectionsList.hpp" />
+    <ClInclude Include="Src\PogoSettings.hpp" />
+    <ClInclude Include="Src\PogoTypes.h" />
+    <ClInclude Include="Src\ResourceIDs.h" />
+    <ClInclude Include="Src\ShowMessage.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\$(ProjectName).c" />
+    <ClCompile Include="Src\APICommon.c" />
+    <ClCompile Include="Src\CMathParser.cpp" />
+    <ClCompile Include="Src\dlgPogoData.cpp" />
+    <ClCompile Include="Src\dlgPogoItemSelect.cpp" />
+    <ClCompile Include="Src\dlgPogoQtyFormula.cpp" />
+    <ClCompile Include="Src\dlgPogoSettings.cpp" />
+    <ClCompile Include="Src\PogoCategoriesList.cpp" />
+    <ClCompile Include="Src\PogoElementsList.cpp" />
+    <ClCompile Include="src\PogoElementWithData.cpp" />
+    <ClCompile Include="Src\PogoHttpClient.cpp" />
+    <ClCompile Include="Src\PogoItemsList.cpp" />
+    <ClCompile Include="Src\PogoPalette.cpp" />
+    <ClCompile Include="Src\PogoQtiesList.cpp" />
+    <ClCompile Include="Src\PogoSectionsList.cpp" />
+    <ClCompile Include="Src\PogoSettings.cpp" />
+    <ClCompile Include="Src\ShowMessage.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="RINT\$(ProjectName).grc">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /X /EP /P /I "..\..\..\Support\Inc" /I "..\..\..\Support\Modules\DGLib" /I ".\Src" /utf-8 /DDEBUG /DWINDOWS /Fi"$(OutDir)\RO\$(ProjectName).grc.rc2.i" "RINT\$(ProjectName).grc"
+        "..\..\..\Support\Tools\Win\ResConv.exe" -m r -D WINDOWS -T W -q utf8 1252 -i "$(OutDir)\RO\$(ProjectName).grc.rc2.i" -D _DEBUG -o "$(OutDir)\RO\$(ProjectName).grc.rc2"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compiling the localized GRC file...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)\RO\$(ProjectName).grc.rc2;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /X /EP /P /I "..\..\..\Support\Inc" /I "..\..\..\Support\Modules\DGLib" /I ".\Src" /utf-8 /DWINDOWS /Fi"$(OutDir)\RO\$(ProjectName).grc.rc2.i" "RINT\$(ProjectName).grc"
+        "..\..\..\Support\Tools\Win\ResConv.exe" -m r -D WINDOWS -T W -q utf8 1252 -i "$(OutDir)\RO\$(ProjectName).grc.rc2.i" -o "$(OutDir)\RO\$(ProjectName).grc.rc2"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compiling the localized GRC file...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)\RO\$(ProjectName).grc.rc2;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="RFIX\$(ProjectName)Fix.grc">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /X /EP /P /I "..\..\..\Support\Inc" /I "..\..\..\Support\Modules\DGLib" /I ".\Src" /utf-8 /DDEBUG /DWINDOWS /Fi"$(OutDir)\RO\$(ProjectName)Fix.grc.rc2.i" "RFIX\$(ProjectName)Fix.grc"
+        "..\..\..\Support\Tools\Win\ResConv.exe" -m r -D WINDOWS -T W -q utf8 1252 -i "$(OutDir)\RO\$(ProjectName)Fix.grc.rc2.i" -p "RFIX\Images" -D _DEBUG -o "$(OutDir)\RO\$(ProjectName)Fix.grc.rc2"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compiling the non-localized GRC file...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)\RO\$(ProjectName)Fix.grc.rc2;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /X /EP /P /I "..\..\..\Support\Inc" /I "..\..\..\Support\Modules\DGLib" /I ".\Src" /utf-8 /DWINDOWS /Fi"$(OutDir)\RO\$(ProjectName)Fix.grc.rc2.i" "RFIX\$(ProjectName)Fix.grc"
+        "..\..\..\Support\Tools\Win\ResConv.exe" -m r -D WINDOWS -T W -q utf8 1252 -i "$(OutDir)\RO\$(ProjectName)Fix.grc.rc2.i" -p "RFIX\Images" -o "$(OutDir)\RO\$(ProjectName)Fix.grc.rc2"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compiling the non-localized GRC file...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)\RO\$(ProjectName)Fix.grc.rc2;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="RFIX.WIN\$(ProjectName).rc2">
+      <FileType>RC</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">rc /i "..\..\..\Support\Inc" /i "..\..\..\Support\Modules\DGLib" /i "$(OutDir)\RO" /d _DEBUG /fo"$(OutDir)$(ProjectName).res" "RFIX.WIN\$(ProjectName).rc2"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compiling the RC2 file...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)$(ProjectName).res;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)\RO\$(ProjectName).grc.rc2;$(OutDir)\RO\$(ProjectName)Fix.grc.rc2;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rc /i "..\..\..\Support\Inc" /i "..\..\..\Support\Modules\DGLib" /i "$(OutDir)\RO" /fo"$(OutDir)$(ProjectName).res" "RFIX.WIN\$(ProjectName).rc2"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compiling the RC2 file...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)$(ProjectName).res;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)\RO\$(ProjectName).grc.rc2;$(OutDir)\RO\$(ProjectName)Fix.grc.rc2;%(AdditionalInputs)</AdditionalInputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Include="..\..\..\Support\Lib\Win\ACAP_STAT.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Include="..\..\..\Support\Lib\Win\ACAP_STATD.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\..\..\Support\Modules\DGGraphix\Win\DGGraphixImp.LIB" />
+    <Library Include="..\..\..\Support\Modules\DGLib\Win\DGImp.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\..\..\Support\Modules\Graphix\Win\GraphixImp.LIB" />
+    <Library Include="..\..\..\Support\Modules\GSRoot\Win\GSRootImp.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\..\..\Support\Modules\GSUtils\Win\GSUtilsImp.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\..\..\Support\Modules\GSXMLUtils\Win\GSXMLUtilsImp.LIB" />
+    <Library Include="..\..\..\Support\Modules\GSXML\Win\GSXMLImp.LIB" />
+    <Library Include="..\..\..\Support\Modules\HTTP\Win\HTTPImp.LIB" />
+    <Library Include="..\..\..\Support\Modules\InputOutput\Win\InputOutputImp.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\..\..\Support\Modules\RS\Win\RSImp.LIB" />
+    <Library Include="..\..\..\Support\Modules\SecureCommunication\Win\SecureCommunicationImp.LIB" />
+    <Library Include="..\..\..\Support\Modules\UCLib\Win\UCImp.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\..\..\Support\Modules\UDLib\Win\UDImp.lib">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\..\..\Support\Modules\TextEngine\Win\TextEngineImp.LIB">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\..\..\Support\Modules\ObjectDatabase\Win\ObjectDatabaseImp.LIB">
+      <FileType>Document</FileType>
+    </Library>
+    <Library Include="..\..\..\Support\Modules\VectorImage\Win\VectorImageImp.LIB">
+      <FileType>Document</FileType>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RFIX\Images\MenuIcon_18x18.svg" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
