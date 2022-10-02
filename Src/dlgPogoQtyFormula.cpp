@@ -26,7 +26,6 @@ PogoQtyFormulaDialog::PogoQtyFormulaDialog() :
 
 	btnOk				(GetReference (), btnOkId),
 	btnCancel			(GetReference (), btnCancelId),
-	lblItemDescript     (GetReference (), lblItemDescriptId),
 	edtFormula			(GetReference (), edtFormulaId),
 	edtQtyDescript		(GetReference (), edtQtyDescriptId),
 	edtCalculatedValue  (GetReference (), edtCalculatedValueId),
@@ -47,12 +46,6 @@ bool PogoQtyFormulaDialog::GetPogoQty(PogoQtyData& qty)
 {
 	strncpy(qty.descript, edtQtyDescript.GetText().ToCStr().Get(), 100);
 	strncpy(qty.formula, edtFormula.GetText().ToCStr().Get(), 100);
-
-	/*double formulaValue;
-	if (element.ParseFormula(edtFormula.GetText(), formulaValue)) {
-		qty.last_value = formulaValue;
-	}*/
-	//strncpy(El.qties->qtyData[El.qties->count - 1].qty_id, qtyId.ToCStr().Get(), 40);
 
 	return true;
 }
@@ -84,7 +77,6 @@ void PogoQtyFormulaDialog::RecalculateQtyValue()
 void PogoQtyFormulaDialog::PanelOpened(const DG::PanelOpenEvent& ev)
 {
 	SetClientSize(GetOriginalClientWidth(), GetOriginalClientHeight());
-	lblItemDescript.SetText(item.descript);
 	edtCalculatedValue.Disable();
 }
 
@@ -108,9 +100,16 @@ void PogoQtyFormulaDialog::PanelCloseRequested(const DG::PanelCloseRequestEvent&
 
 			return;
 		}
+
+		double value;
+		if (!element.ParseFormula(edtFormula.GetText(), value)) {
+			*accepted = false;
+			ShowMessage("Invalid formula!");
+
+			return;
+		}
 	}
 }
-
 void PogoQtyFormulaDialog::ButtonClicked(const DG::ButtonClickEvent& ev)
 {	
 	if (ev.GetSource() == &btnCancel)

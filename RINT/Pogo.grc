@@ -43,16 +43,16 @@
 /* *****************************************************************************
 // Pogo Data Modal
 // ****************************************************************************/
-'GDLG' ID_POGO_DATA_MODAL  Modal | normalFrame | noGrow    0    0 400  400  "" {
+'GDLG' ID_POGO_DATA_MODAL  Modal | normalFrame | noGrow    0    0 400  230  "" {
 /* [  1] */	LeftText          5    5   150   18    LargePlain  vCenter  "AC Elements:"
 /* [  2] */ PopupControl      5   23   390   25    290    4									/* Select Archicad Element */
 /* [  3] */	LeftText          5   50   150   18    LargePlain  vCenter  "Qties:"
 /* [  4] */ MultiSelList      5   68   390  110    LargePlain PartialItems VScroll  25 HasHeader 25
-/* [  5] */ Button            5   190   50   20    LargePlain  "Close"						/* Close Button */
+/* [  5] */ Button            5   190   50   25    LargePlain  "Close"						/* Close Button */
 
-/* [  6] */ Button            250  190   20   20    LargePlain  "Sync"						/* Sync Button */
-/* [  7] */ Button            275  190   20   20    LargePlain  "Del"						/* Delete Button */
-/* [  8] */ Button            300  190   20   20    LargePlain  "Edit"						/* Edit Button */
+/* [  6] */ Button            250  190   40   25    LargePlain  "Sync"						/* Sync Button */
+/* [  7] */ Button            295  190   40   25    LargePlain  "Del"						/* Delete Button */
+/* [  8] */ Button            340  190   40   25    LargePlain  "Edit"						/* Edit Button */
 }
 
 'DLGH'  ID_POGO_DATA_MODAL  DLG_POGO_DATA_Help {
@@ -69,13 +69,13 @@
 /* *****************************************************************************
 // Pogo Select Item Modal
 // ****************************************************************************/
-'GDLG' ID_POGO_ITEMSELECT_MODAL  Modal | vGrow    0    0	   400  400  "Select Item" {
+'GDLG' ID_POGO_ITEMSELECT_MODAL  Modal | grow    0    0	   400  400  "Select Item" {
 /* [  1] */	LeftText          5    5   150   18    LargePlain  vCenter  "Category:"
 /* [  2] */ PopupControl      5   23   390   25    290    4									/* Select Category Combo */
 /* [  3] */	LeftText          5   50   150   18    LargePlain  vCenter  "Section:"
 /* [  4] */ PopupControl      5   68   390   25    290    4									/* Select Section Combo */
 /* [  5] */	LeftText          5   95   150   18    LargePlain  vCenter  "Items:"
-/* [  6] */ SingleSelList     5  115   390  200    LargePlain PartialItems  40
+/* [  6] */ SingleSelList     5  115   390  200    LargePlain PartialItems  43
 /* [  7] */ Button            5   350   50   30    LargePlain  "Next"						/* OK Button */
 /* [  8] */ Button            60  350   50   30    LargePlain  "Cancel"						/* Cancel Button */
 }
@@ -94,32 +94,28 @@
 /* *****************************************************************************
 // Pogo Qty Formula Modal
 // ****************************************************************************/
-'GDLG' ID_POGO_QTYFORMULA_MODAL  Modal | vGrow    0    0	   400  400  "Enter Formula" {
-/* [  1] */	LeftText          5   5    150   15    LargePlain  vCenter  "Item:"
-/* [  2] */	LeftText          5   20   390   40    LargePlain  vCenter  ""					/* Item Descript */
-/* [  3] */	LeftText          5   65   150   15    LargePlain  vCenter  "Descript:"
-/* [  4] */	TextEdit          5   80   390   20    LargePlain  36							/* Qty Descript Input */
-/* [  5] */	LeftText          5   105  150   18    LargePlain  vCenter  "Formula:"
-/* [  6] */ MultiLineEdit     5   125  390   60    LargePlain  VScroll						/* Formula Input */
-/* [  7] */	LeftText          5   190  150   15    LargePlain  vCenter  "Calculated value:"
-/* [  8] */	TextEdit          5   205  300   20    LargePlain  36							/* Value Read-Only Input */
-/* [  9] */ Button            310 205   85   20    LargePlain  "Recalc"						/* Recalc Button */
-/* [ 10] */ Button            5   235   50   30    LargePlain  "Ok"							/* OK Button */
-/* [ 11] */ Button            60  235   50   30    LargePlain  "Cancel"						/* Cancel Button */
+'GDLG' ID_POGO_QTYFORMULA_MODAL  Modal | vGrow    0    0	   400  220  "Enter Formula" {
+/* [  1] */ Button            5   175   50   30    LargePlain  "Ok"							/* OK Button */
+/* [  2] */ Button            60  175   50   30    LargePlain  "Cancel"						/* Cancel Button */
+/* [  3] */	LeftText          5   5    150   15    LargePlain  vCenter  "Descript:"
+/* [  4] */	TextEdit          5   20   390   20    LargePlain  36							/* Qty Descript Input */
+/* [  5] */	LeftText          5   45   150   18    LargePlain  vCenter  "Formula:"
+/* [  6] */ MultiLineEdit     5   65   390   60    LargePlain  VScroll						/* Formula Input */
+/* [  7] */	LeftText          5   130  150   15    LargePlain  vCenter  "Calculated value:"
+/* [  8] */	TextEdit          5   145  300   20    LargePlain  36							/* Value Read-Only Input */
+/* [  9] */ Button            310 145   85   20    LargePlain  "Recalc"						/* Recalc Button */
 }
 
 'DLGH'  ID_POGO_QTYFORMULA_MODAL  DLG_QTYFORMULA_Help {
-1	""							LeftText_1
-2	""							LeftText_2
-3	""							LeftText_3
+1	""							Button_1
+2	""							Button_2
+3	""							LeftText_1
 4	""							TextEdit_1
-5	""							LeftText_4
+5	""							LeftText_2
 6	""							MultiLineEdit_1
-7	""							LeftText_5
+7	""							LeftText_3
 8	""							TextEdit_2
-9	""							Button_1
-10	""							Button_2
-11	""							Button_3
+9	""							Button_3
 }
 
 

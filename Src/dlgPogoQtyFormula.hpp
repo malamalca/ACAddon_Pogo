@@ -29,16 +29,14 @@ class PogoQtyFormulaDialog : public DG::ModalDialog,
 protected: 
 
 	enum Controls {
-		lblItemDescriptId	= 2,
+		btnOkId				= 1,
+		btnCancelId			= 2,
 		edtQtyDescriptId	= 4,
 		edtFormulaId		= 6,
 		edtCalculatedValueId= 8,
 		btnRecalcId			= 9,
-		btnOkId				= 10,
-		btnCancelId			= 11,
 	}; 
 
-	DG::LeftText lblItemDescript;
 	DG::TextEdit edtQtyDescript;
 	DG::MultiLineEdit edtFormula;
 	DG::TextEdit edtCalculatedValue;
@@ -49,7 +47,7 @@ protected:
 	virtual void	PanelOpened(const DG::PanelOpenEvent& ev) override;
 	virtual void    PanelResized(const DG::PanelResizeEvent& ev) override;
 	virtual void	PanelCloseRequested(const DG::PanelCloseRequestEvent& ev, bool* accepted) override;
-
+	
 	virtual void	ButtonClicked(const DG::ButtonClickEvent& ev)	override;
 
 public:

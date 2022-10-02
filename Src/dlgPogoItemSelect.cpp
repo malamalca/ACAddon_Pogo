@@ -34,31 +34,14 @@ PogoItemSelectDialog::PogoItemSelectDialog () :
 	AttachToAllItems(*this);
 	Attach (*this);
 
-	// initialize the listbox
-	const short width = lsItems.GetItemWidth();
-	const short	NoCol_SIZE = 50;
-	const short	DescriptCol_SIZE = width - NoCol_SIZE;
-
-	lsItems.SetTabFieldCount(2);
-	lsItems.SetHeaderSynchronState(false);
-
-	lsItems.SetHeaderItemSize(1, 0);
-	lsItems.SetHeaderItemSize(2, lsItems.GetItemWidth());
-
-	short pos = 0;
-	lsItems.SetTabFieldProperties(1, pos, pos + NoCol_SIZE, DG::ListBox::Center, DG::ListBox::NoTruncate, false);
-	pos += NoCol_SIZE;
-	lsItems.SetTabFieldProperties(2, pos, pos + DescriptCol_SIZE, DG::ListBox::Left, DG::ListBox::NoTruncate, false);
-	pos += DescriptCol_SIZE;
+	ItemListUpdateColumns();
 
 	// to catch ListBoxTabFieldUpdate event:
 	lsItems.SetTabFieldOwnerDrawFlag(2, true);
 
 	// set texts:
-	lsItems.SetHeaderItemText(1, "Qty Id");
+	lsItems.SetHeaderItemText(1, "No");
 	lsItems.SetHeaderItemText(2, "Description");
-	lsItems.SetHeaderItemText(3, "Last Value");
-	lsItems.SetHeaderItemText(4, "Current Value");
 }
 
 PogoItemSelectDialog::~PogoItemSelectDialog()
@@ -80,6 +63,26 @@ bool PogoItemSelectDialog::GetSelectedPogoItem(PogoItem& item)
 	}
 }
 
+void PogoItemSelectDialog::ItemListUpdateColumns()
+{
+	// initialize the listbox
+	const short width = lsItems.GetItemWidth();
+	const short	NoCol_SIZE = 50;
+	const short	DescriptCol_SIZE = width - NoCol_SIZE;
+
+	lsItems.SetTabFieldCount(2);
+	lsItems.SetHeaderSynchronState(false);
+
+	lsItems.SetHeaderItemSize(1, NoCol_SIZE);
+	lsItems.SetHeaderItemSize(2, lsItems.GetItemWidth() - NoCol_SIZE);
+
+	short pos = 0;
+	lsItems.SetTabFieldProperties(1, pos, pos + NoCol_SIZE, DG::ListBox::Center, DG::ListBox::NoTruncate, false);
+	pos += NoCol_SIZE;
+	lsItems.SetTabFieldProperties(2, pos, pos + DescriptCol_SIZE, DG::ListBox::Left, DG::ListBox::NoTruncate, false);
+	pos += DescriptCol_SIZE;
+}
+
 void PogoItemSelectDialog::PanelOpened(const DG::PanelOpenEvent& ev)
 {
 	this->SetClientSize(this->GetOriginalClientWidth(), this->GetOriginalClientHeight());
@@ -90,6 +93,7 @@ void PogoItemSelectDialog::PanelOpened(const DG::PanelOpenEvent& ev)
 		this->UpdateCategories();
 	}
 	else {
+		this->Abort();
 	}
 }
 
@@ -191,13 +195,21 @@ void PogoItemSelectDialog::UpdateItems()
 void PogoItemSelectDialog::PanelResized(const DG::PanelResizeEvent& ev)
 {
 	short vGrow = ev.GetVerticalChange();
-	if (vGrow != 0) {
+	short hGrow = ev.GetHorizontalChange();
+	if (vGrow != 0 || hGrow != 0) {
 		BeginMoveResizeItems();
+
 		btnOk.Move(0, vGrow);
 		btnCancel.Move(0, vGrow);
-		lsItems.Resize(0, vGrow);
+		lsItems.Resize(hGrow, vGrow);
+
+		cbCategory.Resize(hGrow, 0);
+		cbSection.Resize(hGrow, 0);
 
 		EndMoveResizeItems();
+
+		ItemListUpdateColumns();
+		lsItems.Redraw();
 	}
 }
 
@@ -218,6 +230,10 @@ void PogoItemSelectDialog::ListBoxTabFieldUpdate(const DG::ListBoxTabItemUpdateE
 
 		switch (ev.GetTabFieldIndex()) {
 			case 2:
+				if (item % 2 && lsItems.GetSelectedItem() != item) {
+					context.FillRect(0, 0, (float)width - 1, (float)height - 1, 250, 250, 250);
+				}
+
 				context.SetForeColor(Gfx::Color::Black);
 				//context.FrameRect(0, 0, (float)width - 1, (float)height - 1);
 				context.DrawPlainMLTextSafe(items.Get(item-1).descript, fontPlain, 0, 0, 0, width - 1, height - 1, 0);

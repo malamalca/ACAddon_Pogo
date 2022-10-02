@@ -58,7 +58,7 @@
       <WarningLevel>Level3</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>POGO_USE_CURL;CURL_STATICLIB;WIN32;DEBUG;_DEBUG;WINDOWS;_WINDOWS;_USRDLL;_STLP_DONT_FORCE_MSVC_LIB_NAME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>POGO_NUSE_CURL;CURL_STATICLIB;WIN32;DEBUG;_DEBUG;WINDOWS;_WINDOWS;_USRDLL;_STLP_DONT_FORCE_MSVC_LIB_NAME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -94,13 +94,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\Support\Inc;..\..\..\Support\Modules\GSRoot;..\..\..\Support\Modules\GSRoot\STL\imp;..\..\..\Support\Modules\GSUtils;..\..\..\Support\Modules\DGLib;..\..\..\Support\Modules\GX;..\..\..\Support\Modules\GXImage;..\..\..\Support\Modules\GXImageBase;..\..\..\Support\Modules\DGGraphix;..\..\..\Support\Modules\Graphix;..\..\..\Support\Modules\TextEngine;..\..\..\Support\Modules\InputOutput;..\..\..\Support\Modules\UCLib;..\..\..\Support\Modules\UDLib;..\..\..\Support\Modules\Pattern;..\..\..\Support\Modules\VBAttrDialogs;..\..\..\Support\Modules\RS;..\..\..\Support\Modules\HTTP;..\..\..\Support\Modules\Network;..\..\..\Support\Modules\SecureCommunication;..\..\..\Support\Modules\GSXMLUtils;%(AdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\cpp\openssl-1.1.1d\include;C:\Dev\cpp\curl-7.85.0\include;..\..\..\Support\Inc;..\..\..\Support\Modules\GSRoot;..\..\..\Support\Modules\GSRoot\STL\imp;..\..\..\Support\Modules\GSUtils;..\..\..\Support\Modules\DGLib;..\..\..\Support\Modules\GX;..\..\..\Support\Modules\GXImage;..\..\..\Support\Modules\GXImageBase;..\..\..\Support\Modules\DGGraphix;..\..\..\Support\Modules\Graphix;..\..\..\Support\Modules\TextEngine;..\..\..\Support\Modules\InputOutput;..\..\..\Support\Modules\UCLib;..\..\..\Support\Modules\UDLib;..\..\..\Support\Modules\Pattern;..\..\..\Support\Modules\VBAttrDialogs;..\..\..\Support\Modules\RS;..\..\..\Support\Modules\HTTP;..\..\..\Support\Modules\Network;..\..\..\Support\Modules\SecureCommunication;..\..\..\Support\Modules\GSXML;..\..\..\Support\Modules\GSXMLUtils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>CURL_STATICLIB;WIN32;NDEBUG;WINDOWS;_WINDOWS;_USRDLL;_STLP_DONT_FORCE_MSVC_LIB_NAME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CURL_STATICLIB;POGO_USE_CURL;WIN32;NDEBUG;WINDOWS;_WINDOWS;_USRDLL;_STLP_DONT_FORCE_MSVC_LIB_NAME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -110,7 +110,7 @@
       </PrecompiledHeader>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
-      <BrowseInformation>true</BrowseInformation>
+      <BrowseInformation>false</BrowseInformation>
       <BrowseInformationFile>$(IntDir)</BrowseInformationFile>
       <CallingConvention>FastCall</CallingConvention>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -128,7 +128,8 @@
       </ImportLibrary>
       <LinkDLL>true</LinkDLL>
       <AdditionalOptions>/export:GetExportedFuncAddrs,%401 /export:SetImportedFuncAddrs,%402 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Dev\cpp\curl-7.85.0\build\Win64\VC14.10\LIB Release - LIB OpenSSL;C:\Dev\cpp\openssl-1.1.1d\x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>crypt32.lib;wldap32.lib;ws2_32.lib;libcrypto.lib;libssl.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -139,6 +140,16 @@
     <ClInclude Include="Src\dlgPogoItemSelect.hpp" />
     <ClInclude Include="Src\dlgPogoQtyFormula.hpp" />
     <ClInclude Include="Src\dlgPogoSettings.hpp" />
+    <ClInclude Include="Src\ElementFuncs\BeamElementFuncs.hpp" />
+    <ClInclude Include="Src\ElementFuncs\ColumnElementFuncs.hpp" />
+    <ClInclude Include="Src\ElementFuncs\ElementFuncsFactory.hpp" />
+    <ClInclude Include="Src\ElementFuncs\HatchElementFuncs.hpp" />
+    <ClInclude Include="Src\ElementFuncs\LineElementFuncs.hpp" />
+    <ClInclude Include="Src\ElementFuncs\MorphElementFuncs.hpp" />
+    <ClInclude Include="Src\ElementFuncs\ObjectElementFuncs.hpp" />
+    <ClInclude Include="Src\ElementFuncs\PolyLineElementFuncs.hpp" />
+    <ClInclude Include="Src\ElementFuncs\RoofElementFuncs.hpp" />
+    <ClInclude Include="Src\ElementFuncs\SlabElementFuncs.hpp" />
     <ClInclude Include="Src\PogoCategoriesList.hpp" />
     <ClInclude Include="Src\PogoCategory.hpp" />
     <ClInclude Include="Src\PogoElementsList.hpp" />
@@ -163,6 +174,18 @@
     <ClCompile Include="Src\dlgPogoItemSelect.cpp" />
     <ClCompile Include="Src\dlgPogoQtyFormula.cpp" />
     <ClCompile Include="Src\dlgPogoSettings.cpp" />
+    <ClCompile Include="Src\ElementFuncs\BeamElementFuncs.cpp" />
+    <ClCompile Include="Src\ElementFuncs\ColumnElementFuncs.cpp" />
+    <ClCompile Include="Src\ElementFuncs\ElementFuncsFactory.cpp" />
+    <ClCompile Include="Src\ElementFuncs\HatchElementFuncs.cpp" />
+    <ClCompile Include="Src\ElementFuncs\IElementFuncs.cpp" />
+    <ClCompile Include="Src\ElementFuncs\IElementFuncs.hpp" />
+    <ClCompile Include="Src\ElementFuncs\LineElementFuncs.cpp" />
+    <ClCompile Include="Src\ElementFuncs\MorphElementFuncs.cpp" />
+    <ClCompile Include="Src\ElementFuncs\ObjectElementFuncs.cpp" />
+    <ClCompile Include="Src\ElementFuncs\PolyLineElementFuncs.cpp" />
+    <ClCompile Include="Src\ElementFuncs\RoofElementFuncs.cpp" />
+    <ClCompile Include="Src\ElementFuncs\SlabElementFuncs.cpp" />
     <ClCompile Include="Src\PogoCategoriesList.cpp" />
     <ClCompile Include="Src\PogoElementsList.cpp" />
     <ClCompile Include="src\PogoElementWithData.cpp" />
@@ -216,9 +239,14 @@
   <ItemGroup>
     <Library Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Include="..\..\..\Support\Lib\Win\ACAP_STAT.lib">
       <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </Library>
-    <Library Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Include="..\..\..\Support\Lib\Win\ACAP_STATD.lib">
-      <FileType>Document</FileType>
+    <Library Include="..\..\..\Support\Lib\Win\ACAP_STAT.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\..\..\Support\Lib\Win\ACAP_STATD.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Library>
     <Library Include="..\..\..\Support\Modules\DGGraphix\Win\DGGraphixImp.LIB" />
     <Library Include="..\..\..\Support\Modules\DGLib\Win\DGImp.lib">

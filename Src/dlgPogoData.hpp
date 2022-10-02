@@ -25,6 +25,7 @@ class PogoDataDialog: public DG::ModalDialog,
 	public DG::PanelObserver,
 	public DG::ButtonItemObserver,
 	public DG::ListBoxObserver,
+	public DG::PopUpObserver,
 	public DG::CompoundItemObserver
 { 
 protected: 
@@ -51,15 +52,15 @@ protected:
 	virtual void	PanelOpened(const DG::PanelOpenEvent& ev) override;
 	virtual void	ButtonClicked(const DG::ButtonClickEvent& ev)	override;
 	virtual void	ListBoxSelectionChanged(const DG::ListBoxSelectionEvent& ev) override;
+	virtual void	PanelHotkeyPressed(const DG::PanelHotKeyEvent& ev, bool* processed) override;
+	virtual void	PopUpChanged(const DG::PopUpChangeEvent& ev) override;
 
 public:
 	PogoDataDialog(PogoElementsList selectedElements);
 	~PogoDataDialog();
 
-	void LoadPogoData();
-	void SetPogoData();
-
 private:
+	short KeyID_ESC;
 	PogoElementsList selectedElements;
 
 	void UpdateQtiesList();

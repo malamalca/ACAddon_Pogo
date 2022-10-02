@@ -10,8 +10,6 @@
 
 #include "ResourceIDs.h"
 
-/* TODO: replace the first ID with your developer ID and the second ID with */
-/*       your local ID                                                      */
 
 'MDID' 32500 "Add-On Identifier" {
 	1211329892

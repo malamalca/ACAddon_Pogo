@@ -4,8 +4,9 @@
 #include	"GSXMLDOMReader.hpp"
 #include	"xercesc/dom/DOM.hpp"
 #include	"CMathParser.h"
-#include "PogoElementWithData.hpp"
-#include "PogoHttpClient.hpp"
+#include	"PogoElementWithData.hpp"
+#include	"PogoHttpClient.hpp"
+#include	"ElementFuncs/ElementFuncsFactory.hpp"
 
 GS::UniString PogoElementWithData::RESTCreateQty(const PogoItem& item, const GS::UniString& descript, const double& value)
 {
@@ -80,124 +81,17 @@ bool PogoElementWithData::ParseFormula(const GS::UniString& formula, double& res
 	// get element
 	API_Element element;
 	BNZeroMemory(&element, sizeof(API_Element));
+
 	element.header.guid = this->guid;
 
 	if (ACAPI_Element_Get(&element) == NoError) {
-		const std::string ff(formula.ToCStr(0, MaxUSize, GSCharCode::CC_Legacy));
-
 		CMathParser MP;
 		double res(0);
 
 		MP.DebugMode(false);
 		MP.SetVariableSetCallback(nullptr);
 
-		switch (element.header.typeID) {
-			case API_ObjectID: {
-				MP.AddVariable("A", element.object.xRatio);
-				MP.AddVariable("B", element.object.yRatio);
-				break;
-			}
-			case API_SlabID: {
-				MP.AddVariable("Thickness", element.slab.thickness);
-
-				GS::Array<API_CompositeQuantity> composites;		
-				API_ElementQuantity quantity;
-				API_QuantitiesMask  mask;
-
-				ACAPI_ELEMENT_QUANTITY_MASK_CLEAR(mask);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, slab, perimeter);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, slab, topSurface);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, slab, volume);
-				ACAPI_ELEMENT_COMPOSITES_QUANTITY_MASK_SETFULL(mask);
-
-				
-				if (GetQuantities(element, mask, quantity, composites)) {
-					MP.AddVariable("Perimeter", quantity.slab.perimeter);
-					MP.AddVariable("Area", quantity.slab.topSurface);
-					MP.AddVariable("Volume", quantity.slab.volume);
-
-					double coreVolume = 0;
-					for (UInt32 i = 0; i < composites.GetSize(); i++) {
-						if ((composites[i].flags & APISkin_Core) != 0) {
-							coreVolume += composites[i].volumes;
-						}
-					}
-					MP.AddVariable("CoreVolume", coreVolume);
-				}
-
-				break;
-			}
-			case API_ColumnID: {
-				GS::Array<API_CompositeQuantity> composites;
-				API_ElementQuantity quantity;
-				API_QuantitiesMask  mask;
-
-				ACAPI_ELEMENT_QUANTITY_MASK_CLEAR(mask);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, column, coreBotSurf);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, column, coreVolume);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, column, maxHeight);
-
-				if (GetQuantities(element, mask, quantity, composites)) {
-					MP.AddVariable("CoreArea", quantity.column.coreBotSurf);
-					MP.AddVariable("CoreVolume", quantity.column.coreVolume);
-					MP.AddVariable("Height", quantity.column.maxHeight);
-				}
-
-				break;
-			}
-			case API_MorphID: {
-				GS::Array<API_CompositeQuantity> composites;
-				API_ElementQuantity quantity;
-				API_QuantitiesMask  mask;
-
-				ACAPI_ELEMENT_QUANTITY_MASK_CLEAR(mask);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, morph, volume);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, morph, surface);
-
-				if (GetQuantities(element, mask, quantity, composites)) {
-					MP.AddVariable("Volume", quantity.morph.volume);
-					MP.AddVariable("Area", quantity.morph.surface);
-				}
-
-				break;
-			}
-			case API_HatchID: {
-				GS::Array<API_CompositeQuantity> composites;
-				API_ElementQuantity quantity;
-				API_QuantitiesMask  mask;
-
-				ACAPI_ELEMENT_QUANTITY_MASK_CLEAR(mask);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, hatch, perimeter);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, hatch, surface);
-
-				if (GetQuantities(element, mask, quantity, composites)) {
-					MP.AddVariable("Perimeter", quantity.hatch.perimeter);
-					MP.AddVariable("Area", quantity.hatch.surface);
-				}
-
-				break;
-			}
-			case API_RoofID: {
-				GS::Array<API_CompositeQuantity> composites;
-				API_ElementQuantity quantity;
-				API_QuantitiesMask  mask;
-
-				ACAPI_ELEMENT_QUANTITY_MASK_CLEAR(mask);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, roof, topSurface);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, roof, volume);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, roof, perimeter);
-				ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, roof, contourArea);
-
-				if (GetQuantities(element, mask, quantity, composites)) {
-					MP.AddVariable("Perimeter", quantity.roof.perimeter);
-					MP.AddVariable("Area", quantity.roof.contourArea);
-					MP.AddVariable("TopArea", quantity.roof.topSurface);
-					MP.AddVariable("Volume", quantity.roof.volume);
-				}
-
-				break;
-			}
-		}
+		(ElementFuncsFactory::Get())->SetVariables(element, MP);
 
 		if (MP.Calculate(formula.ToCStr(0, MaxUSize, GSCharCode::CC_Legacy).Get(), &result) == CMathParser::ResultOk) {
 			return true;
@@ -252,43 +146,4 @@ bool PogoElementWithData::UpdateQties()
 	}
 
 	return false;
-}
-
-bool PogoElementWithData::GetQuantities(const API_Element& element, const API_QuantitiesMask& mask, API_ElementQuantity& quantity,
-	GS::Array<API_CompositeQuantity>& composites
-)
-{
-	GSErrCode           err;
-	API_Quantities      quantities;
-
-	quantities.elements = &quantity;
-	quantities.composites = &composites;
-
-	BNZeroMemory(&quantity, sizeof(API_ElementQuantity));
-
-	err = ACAPI_Element_GetQuantities(element.header.guid, nullptr, &quantities, &mask);
-
-	return err == NoError;
-}
-
-
-bool PogoElementWithData::GetQuantities(const API_Element& element, const API_QuantitiesMask& mask, API_ElementQuantity& quantity,
-		GS::Array<API_CompositeQuantity>& composites,
-		GS::Array<API_ElemPartQuantity>& elemPartQuantities,
-		GS::Array <API_ElemPartCompositeQuantity>&	elemPartComposites
-)
-{
-	GSErrCode           err;
-	API_Quantities      quantities;
-
-	quantities.elements = &quantity;
-	quantities.composites = &composites;
-	quantities.elemPartQuantities = &elemPartQuantities;
-	quantities.elemPartComposites = &elemPartComposites;
-
-	BNZeroMemory(&quantity, sizeof(API_ElementQuantity));
-
-	err = ACAPI_Element_GetQuantities(element.header.guid, nullptr, &quantities, &mask);
-
-	return err == NoError;
 }

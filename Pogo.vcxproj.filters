@@ -13,16 +13,9 @@
       <UniqueIdentifier>{de7d7a13-a071-41e4-8f04-7d1691f7ec83}</UniqueIdentifier>
       <Extensions>cpp;c;cxx</Extensions>
     </Filter>
-    <Filter Include="Src\Headers">
-      <UniqueIdentifier>{b32da348-770f-41d8-85c9-903e1cc415c5}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx</Extensions>
-    </Filter>
     <Filter Include="Libraries">
       <UniqueIdentifier>{42902bf0-12fb-4ecb-a6fa-d9d2cf0ceeb9}</UniqueIdentifier>
       <Extensions>lib</Extensions>
-    </Filter>
-    <Filter Include="Src\Types">
-      <UniqueIdentifier>{ec3a1173-c6fe-488a-9a04-894006dd933c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Dialogs">
       <UniqueIdentifier>{526be2ff-9829-48aa-a1ff-06cc20e85958}</UniqueIdentifier>
@@ -30,8 +23,18 @@
     <Filter Include="Src\Other">
       <UniqueIdentifier>{f888d6e5-e013-43d7-82a2-d7712d2265d6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Dialogs\Headers">
-      <UniqueIdentifier>{1ae95c73-a9ec-4bea-87f6-d509b17aab82}</UniqueIdentifier>
+    <Filter Include="Src\Data">
+      <UniqueIdentifier>{d5fddb75-bd3d-4300-9b4f-ffc212747c1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Data\Entities">
+      <UniqueIdentifier>{b32da348-770f-41d8-85c9-903e1cc415c5}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Src\Data\Tables">
+      <UniqueIdentifier>{ec3a1173-c6fe-488a-9a04-894006dd933c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\ElementFuncs">
+      <UniqueIdentifier>{5e5e69ba-3f07-4a85-9945-bbdbba2c8a8c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,16 +45,16 @@
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\PogoElementsList.cpp">
-      <Filter>Src\Types</Filter>
+      <Filter>Src\Data\Tables</Filter>
     </ClCompile>
     <ClCompile Include="Src\PogoCategoriesList.cpp">
-      <Filter>Src\Types</Filter>
+      <Filter>Src\Data\Tables</Filter>
     </ClCompile>
     <ClCompile Include="Src\PogoSectionsList.cpp">
-      <Filter>Src\Types</Filter>
+      <Filter>Src\Data\Tables</Filter>
     </ClCompile>
     <ClCompile Include="Src\PogoItemsList.cpp">
-      <Filter>Src\Types</Filter>
+      <Filter>Src\Data\Tables</Filter>
     </ClCompile>
     <ClCompile Include="Src\dlgPogoData.cpp">
       <Filter>Src\Dialogs</Filter>
@@ -68,9 +71,6 @@
     <ClCompile Include="Src\ShowMessage.cpp">
       <Filter>Src\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="src\PogoElementWithData.cpp">
-      <Filter>Src\Other</Filter>
-    </ClCompile>
     <ClCompile Include="Src\PogoHttpClient.cpp">
       <Filter>Src\Other</Filter>
     </ClCompile>
@@ -81,54 +81,66 @@
       <Filter>Src\Other</Filter>
     </ClCompile>
     <ClCompile Include="Src\PogoQtiesList.cpp">
-      <Filter>Src\Types</Filter>
+      <Filter>Src\Data\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PogoElementWithData.cpp">
+      <Filter>Src\Data\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Src\CMathParser.cpp">
-      <Filter>Src</Filter>
+      <Filter>Src\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\ElementFuncsFactory.cpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\IElementFuncs.hpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\ObjectElementFuncs.cpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\SlabElementFuncs.cpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\IElementFuncs.cpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\PolyLineElementFuncs.cpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\ColumnElementFuncs.cpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\BeamElementFuncs.cpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\MorphElementFuncs.cpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\RoofElementFuncs.cpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\HatchElementFuncs.cpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\LineElementFuncs.cpp">
+      <Filter>Src\ElementFuncs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\PogoTypes.h">
-      <Filter>Src\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\PogoElementsList.hpp">
-      <Filter>Src\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\PogoHttpClient.hpp">
-      <Filter>Src\Headers</Filter>
+      <Filter>Src\Data\Entities</Filter>
     </ClInclude>
     <ClInclude Include="src\PogoElementWithData.hpp">
-      <Filter>Src\Headers</Filter>
+      <Filter>Src\Data\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Src\PogoCategory.hpp">
-      <Filter>Src\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\PogoCategoriesList.hpp">
-      <Filter>Src\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\PogoSectionsList.hpp">
-      <Filter>Src\Headers</Filter>
+      <Filter>Src\Data\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Src\PogoSection.hpp">
-      <Filter>Src\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\PogoItemsList.hpp">
-      <Filter>Src\Headers</Filter>
+      <Filter>Src\Data\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Src\PogoItem.hpp">
-      <Filter>Src\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\PogoSettings.hpp">
-      <Filter>Src\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\dlgPogoData.hpp">
-      <Filter>Src\Dialogs\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\dlgPogoItemSelect.hpp">
-      <Filter>Src\Dialogs\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\dlgPogoQtyFormula.hpp">
-      <Filter>Src\Dialogs\Headers</Filter>
+      <Filter>Src\Data\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Src\APICommon.h">
       <Filter>Src</Filter>
@@ -139,20 +151,77 @@
     <ClInclude Include="Src\ResourceIDs.h">
       <Filter>Src</Filter>
     </ClInclude>
-    <ClInclude Include="Src\dlgPogoSettings.hpp">
-      <Filter>Src\Dialogs\Headers</Filter>
+    <ClInclude Include="Src\PogoCategoriesList.hpp">
+      <Filter>Src\Data\Tables</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ShowMessage.hpp">
-      <Filter>Src\Dialogs\Headers</Filter>
+    <ClInclude Include="Src\PogoElementsList.hpp">
+      <Filter>Src\Data\Tables</Filter>
     </ClInclude>
-    <ClInclude Include="Src\PogoPalette.h">
-      <Filter>Src\Dialogs\Headers</Filter>
+    <ClInclude Include="Src\PogoItemsList.hpp">
+      <Filter>Src\Data\Tables</Filter>
     </ClInclude>
     <ClInclude Include="Src\PogoQtiesList.hpp">
-      <Filter>Src\Headers</Filter>
+      <Filter>Src\Data\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PogoSectionsList.hpp">
+      <Filter>Src\Data\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PogoHttpClient.hpp">
+      <Filter>Src\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PogoSettings.hpp">
+      <Filter>Src\Other</Filter>
     </ClInclude>
     <ClInclude Include="Src\CMathParser.h">
-      <Filter>Src</Filter>
+      <Filter>Src\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\dlgPogoData.hpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\dlgPogoItemSelect.hpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\dlgPogoQtyFormula.hpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\dlgPogoSettings.hpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PogoPalette.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ShowMessage.hpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\ElementFuncsFactory.hpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\ObjectElementFuncs.hpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\SlabElementFuncs.hpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\PolyLineElementFuncs.hpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\ColumnElementFuncs.hpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\BeamElementFuncs.hpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\MorphElementFuncs.hpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\RoofElementFuncs.hpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\HatchElementFuncs.hpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\LineElementFuncs.hpp">
+      <Filter>Src\ElementFuncs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -186,9 +255,6 @@
     <Library Include="..\..\..\Support\Modules\RS\Win\RSImp.LIB">
       <Filter>Libraries</Filter>
     </Library>
-    <Library Include="..\..\..\Support\Lib\Win\ACAP_STATD.lib">
-      <Filter>Libraries</Filter>
-    </Library>
     <Library Include="..\..\..\Support\Modules\HTTP\Win\HTTPImp.LIB">
       <Filter>Libraries</Filter>
     </Library>
@@ -205,6 +271,12 @@
       <Filter>Libraries</Filter>
     </Library>
     <Library Include="..\..\..\Support\Modules\Graphix\Win\GraphixImp.LIB">
+      <Filter>Libraries</Filter>
+    </Library>
+    <Library Include="..\..\..\Support\Lib\Win\ACAP_STATD.lib">
+      <Filter>Libraries</Filter>
+    </Library>
+    <Library Include="..\..\..\Support\Lib\Win\ACAP_STAT.lib">
       <Filter>Libraries</Filter>
     </Library>
   </ItemGroup>

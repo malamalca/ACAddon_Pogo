@@ -67,6 +67,8 @@ public:
 	~PogoItemSelectDialog();
 
 	bool GetSelectedPogoItem(PogoItem& item);
+private:
+	void ItemListUpdateColumns();
 }; 
 
 #endif // POGO_ITEMSELECT_DIALOG_H

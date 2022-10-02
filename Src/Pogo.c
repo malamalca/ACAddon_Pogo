@@ -79,26 +79,33 @@ void PogoShowItemsSelectDialog()
 			return;
 		}
 
+		// store qty
+		GSErrCode			err;
+		PogoQtyData			qty;
+		bool				dialogSuccess = false;
+
 		qtyFormulaDialog.item = selectedItem;
 		qtyFormulaDialog.SetPogoElement(selectedElements.GetFirst());
-		if (qtyFormulaDialog.Invoke()) {
-			// store qty
-			GSErrCode			err;
-			PogoQtyData			qty;
-			qtyFormulaDialog.GetPogoQty(qty);
 
-			err = ACAPI_CallUndoableCommand("Attach Qties", [&selectedElements, &selectedItem, &qty]() -> GSErrCode {
-				bool res = selectedElements.AttachQty(selectedItem, qty.descript, qty.formula);
-				return res == true ? NoError : -1;
-			});
+		while (!dialogSuccess) {
+			if (qtyFormulaDialog.Invoke()) {
+				qtyFormulaDialog.GetPogoQty(qty);
 
-			if (err != NoError) {
-				ShowMessage("Failed to attach Qty! Try Again");
+				err = ACAPI_CallUndoableCommand("Attach Qties", [&selectedElements, &selectedItem, &qty]() -> GSErrCode {
+					bool res = selectedElements.AttachQty(selectedItem, qty.descript, qty.formula);
+					return res == true ? NoError : -1;
+				});
 
-				return;
+				if (err != NoError) {
+					ShowMessage("Failed to attach Qty!");
+				}
+				else {
+					ShowMessage("Qty Attached!");
+					dialogSuccess = true;
+				}
 			}
 			else {
-				ShowMessage("Qty Attached!");
+				dialogSuccess = true;
 			}
 		}
 	}
@@ -121,10 +128,17 @@ void PogoSendQties()
 		return;
 	}
 
+	GSErrCode err;
+	err = ACAPI_CallUndoableCommand("Delete user data to an elem", [&data]() -> GSErrCode {
+		data.UpdateQtyValues();
+
+		return NoError;
+	});
+
 	PogoSettings pogoSettings;
 	PogoSettings::LoadPogoSettingsFromPreferences(pogoSettings);
 
-	data.SendUpdate (pogoSettings.Host, pogoSettings.Username, pogoSettings.Password);
+	data.SendUpdate(pogoSettings.Host, pogoSettings.Username, pogoSettings.Password);
 } // PogoSendQties
 
 // -----------------------------------------------------------------------------
@@ -142,13 +156,11 @@ void PogoDeleteData()
 	}
 
 	GSErrCode err;
-	err = ACAPI_CallUndoableCommand("Delete user data to an elem",
-		[&data]() -> GSErrCode {
-			data.DeleteData();
+	err = ACAPI_CallUndoableCommand("Delete user data to an elem", [&data]() -> GSErrCode {
+		data.DeleteData();
 
-			return NoError;
-		}
-	);
+		return NoError;
+	});
 } // PogoDeleteData
 
 // -----------------------------------------------------------------------------
@@ -188,7 +200,7 @@ GSErrCode __ACENV_CALL MenuCommandHandler (const API_MenuParams *menuParams)
 			case 2:
 				PogoShowDataDialog();
 				break;
-			case 6:
+			case 7:
 				PogoShowSettingsDialog();
 				break;
 		}

@@ -12,6 +12,7 @@
 #include	"ACAPinc.h"					// also includes APIdefs.h
 #include	"ResourceIDs.h"
 
+#include	"ElementFuncs/ElementFuncsFactory.hpp"
 #include	"dlgPogoData.hpp" 
 #include	"PogoTypes.h"
 #include	"PogoQtiesList.hpp"
@@ -64,6 +65,8 @@ PogoDataDialog::PogoDataDialog (PogoElementsList selectedElements) :
 	pos += Val1Col_SIZE;
 	lsQties.SetTabFieldProperties(4, pos, pos + Val2Col_SIZE, DG::ListBox::Right, DG::ListBox::NoTruncate, false);
 
+	KeyID_ESC = this->RegisterHotKey(DG_KEY_ESCAPE);
+
 	UpdateInterface();
 }
 
@@ -87,15 +90,7 @@ void PogoDataDialog::PanelOpened(const DG::PanelOpenEvent& ev)
 		if (ACAPI_Element_Get(&element) == NoError) {
 			cbElements.InsertItem(cbElements.GetItemCount() + 1);
 
-			GS::UniString elementCaption;
-			switch (element.header.typeID) {
-				case API_ObjectID:
-					elementCaption = "Object";
-					break;
-				default:
-					elementCaption = "Unknown";
-			}
-
+			GS::UniString elementCaption = (ElementFuncsFactory::Get())->GetName(element);
 			cbElements.SetItemText(cbElements.GetItemCount(), elementCaption);
 		}
 	}
@@ -126,36 +121,21 @@ void PogoDataDialog::ListBoxSelectionChanged(const DG::ListBoxSelectionEvent& ev
 	UpdateInterface();
 }
 
-void PogoDataDialog::LoadPogoData()
+void PogoDataDialog::PanelHotkeyPressed(const DG::PanelHotKeyEvent& ev, bool* processed)
 {
-	/*edtQtyId.SetText(_element.qties->qtyData[0].qty_id);
-	edtFormula.SetText(_element.qties->qtyData[0].formula);*/
+	short keyId = ev.GetKeyId();
+
+	if (keyId == KeyID_ESC) {
+		*processed = true;
+		PostCloseRequest(Cancel);
+	}
 }
 
-void PogoDataDialog::SetPogoData ()
+void PogoDataDialog::PopUpChanged(const DG::PopUpChangeEvent& ev)
 {
-	/*GSErrCode			err;
-
-	PogoLinkedQties data;
-	strcpy (data.qtyData[0].formula, edtFormula.GetText ().ToCStr());
-	strcpy (data.qtyData[0].qty_id, edtQtyId.GetText ().ToCStr ());
-	data.qtyData[0].last_value = 1.2;
-
-	API_ElementUserData userData = {};
-	userData.dataVersion = 1;
-	userData.platformSign = GS::Act_Platform_Sign;
-	userData.flags = APIUserDataFlag_FillWith | APIUserDataFlag_Pickup;
-	userData.dataHdl = BMAllocateHandle(sizeof(data), ALLOCATE_CLEAR, 0);
-	*reinterpret_cast<PogoLinkedQties*> (*userData.dataHdl) = data;
-
-	API_Elem_Head element = {};
-	element.guid = _element.guid;
-
-	err = ACAPI_CallUndoableCommand("Set user data to an elem",
-		[&userData, &element]() -> GSErrCode {
-			return ACAPI_Element_SetUserData(&element, &userData);
-		}
-	);*/
+	if (ev.GetSource() == &cbElements) {
+		UpdateQtiesList();
+	}
 }
 
 void PogoDataDialog::UpdateQtiesList()
@@ -172,10 +152,6 @@ void PogoDataDialog::UpdateQtiesList()
 			for (short i = 0; i < (short)selectedElement.qties->count; i++) {
 				lsQties.InsertItem(i + 1);
 				UpdateQtyListItem(i + 1, selectedElement.qties->qtyData[i]);
-				//lsQties.SetTabItemText(i + 1, 1, selectedElement.qties->qtyData[i].qty_id);
-				//lsQties.SetTabItemText(i + 1, 2, selectedElement.qties->qtyData[i].formula);
-				//lsQties.SetTabItemText(i + 1, 3, GS::UniString::Printf("%.2f", selectedElement.qties->qtyData[i].last_value));
-				//lsQties.SetTabItemText(i + 1, 4, GS::UniString::Printf("%.2f", selectedElement.ParseFormula(selectedElement.qties->qtyData[i].formula)));
 			}
 		}
 	}
@@ -184,10 +160,12 @@ void PogoDataDialog::UpdateQtiesList()
 
 void PogoDataDialog::UpdateQtyListItem(short listItemIndex, PogoQtyData& qty)
 {
+	PogoElementWithData selectedElement = selectedElements.Get(cbElements.GetSelectedItem() - 1);
+
 	lsQties.SetTabItemText(listItemIndex, 1, qty.qty_id);
 	lsQties.SetTabItemText(listItemIndex, 2, qty.formula);
 	lsQties.SetTabItemText(listItemIndex, 3, GS::UniString::Printf("%.2f", qty.last_value));
-	lsQties.SetTabItemText(listItemIndex, 4, GS::UniString::Printf("%.2f", qty.formula));
+	lsQties.SetTabItemText(listItemIndex, 4, GS::UniString::Printf("%.2f", selectedElement.ParseFormula(qty.formula)));
 }
 
 void PogoDataDialog::UpdateInterface()

@@ -155,6 +155,19 @@ bool PogoElementsList::AttachQty(const PogoItem& item, const GS::UniString& desc
 	return true;
 }
 
+bool PogoElementsList::UpdateQtyValues()
+{
+	for (PogoElementWithData& El : *this) {
+		for (short i = 0; i < (short)El.qties->count; i++) {
+			El.qties->qtyData[i].last_value = El.ParseFormula(El.qties->qtyData[i].formula);
+		}
+
+		El.UpdateQties();
+	}
+
+	return true;
+}
+
 bool PogoElementsList::SendUpdate(const GS::UniString& host, const GS::UniString& username, const GS::UniString& password)
 {
 	// prepare POST request
