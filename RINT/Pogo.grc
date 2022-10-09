@@ -50,9 +50,9 @@
 /* [  4] */ MultiSelList      5   68   390  110    LargePlain PartialItems VScroll  25 HasHeader 25
 /* [  5] */ Button            5   190   50   25    LargePlain  "Close"						/* Close Button */
 
-/* [  6] */ Button            250  190   40   25    LargePlain  "Sync"						/* Sync Button */
-/* [  7] */ Button            295  190   40   25    LargePlain  "Del"						/* Delete Button */
-/* [  8] */ Button            340  190   40   25    LargePlain  "Edit"						/* Edit Button */
+/* [  6] */ Button            250  190   40   25   LargePlain  "Sync"						/* Sync Button */
+/* [  7] */ Button            295  190   40   25   LargePlain  "Del"						/* Delete Button */
+/* [  8] */ Button            340  190   40   25   LargePlain  "Edit"						/* Edit Button */
 }
 
 'DLGH'  ID_POGO_DATA_MODAL  DLG_POGO_DATA_Help {
@@ -97,13 +97,14 @@
 'GDLG' ID_POGO_QTYFORMULA_MODAL  Modal | vGrow    0    0	   400  220  "Enter Formula" {
 /* [  1] */ Button            5   175   50   30    LargePlain  "Ok"							/* OK Button */
 /* [  2] */ Button            60  175   50   30    LargePlain  "Cancel"						/* Cancel Button */
-/* [  3] */	LeftText          5   5    150   15    LargePlain  vCenter  "Descript:"
+/* [  3] */	LeftText          5   5     50   15    LargePlain  vCenter  "Descript:"
 /* [  4] */	TextEdit          5   20   390   20    LargePlain  36							/* Qty Descript Input */
-/* [  5] */	LeftText          5   45   150   18    LargePlain  vCenter  "Formula:"
+/* [  5] */	LeftText          5   45    50   18    LargePlain  vCenter  "Formula:"
 /* [  6] */ MultiLineEdit     5   65   390   60    LargePlain  VScroll						/* Formula Input */
 /* [  7] */	LeftText          5   130  150   15    LargePlain  vCenter  "Calculated value:"
 /* [  8] */	TextEdit          5   145  300   20    LargePlain  36							/* Value Read-Only Input */
 /* [  9] */ Button            310 145   85   20    LargePlain  "Recalc"						/* Recalc Button */
+/* [ 10] */ UserControl		  365 42    30   20    263										/* Popup Variables */
 }
 
 'DLGH'  ID_POGO_QTYFORMULA_MODAL  DLG_QTYFORMULA_Help {

@@ -9,8 +9,9 @@
 
 class HatchElementFuncs : public IElementFuncs {
 public:
-    GS::UniString getName() override { return GS::UniString("Hatch"); };
-    void SetVariables(const API_Element element, CMathParser& MP) override;
+    GS::UniString               getName() override { return GS::UniString("Hatch"); };
+    GS::Array<GS::UniString>    GetAvailebleVariables() { return { "Area", "Perimeter"}; };
+    void                        SetVariables(const API_Element element, CMathParser& MP) override;
 };
 
 #endif

@@ -15,8 +15,9 @@ private:
 public:
     static ElementFuncsFactory* Get();
     
-    GS::UniString   GetName(const API_Element element);
-    bool            SetVariables(const API_Element element, CMathParser& MP);
+    GS::UniString               GetName(const API_Element element);
+    bool                        SetVariables(const API_Element element, CMathParser& MP);
+    GS::Array<GS::UniString>    GetAvailebleVariables(const API_Element element);
 };
 
 #endif

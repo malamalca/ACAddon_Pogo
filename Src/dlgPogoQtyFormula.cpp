@@ -14,7 +14,7 @@
 
 #include	"PogoTypes.h"
 #include    "PogoItemsList.hpp"
-
+#include	"ElementFuncs/ElementFuncsFactory.hpp"
 #include	"ShowMessage.hpp"
 #include	"dlgPogoQtyFormula.hpp" 
 
@@ -30,10 +30,21 @@ PogoQtyFormulaDialog::PogoQtyFormulaDialog() :
 	edtQtyDescript		(GetReference (), edtQtyDescriptId),
 	edtCalculatedValue  (GetReference (), edtCalculatedValueId),
 	btnRecalc			(GetReference (), btnRecalcId),
+	popupVariables		(GetReference (), popupVariablesId),
 	qty_id				("")
 {
 	AttachToAllItems(*this);
 	Attach (*this);
+
+	popupVariables.DeleteAllItems();
+	
+	/*popupVariables.AppendItem();
+	popupVariables.SetItemText(1, "aaa");
+	popupVariables.AppendItem();
+	popupVariables.SetItemText(2, "bbb");
+	popupVariables.AppendItem();
+	popupVariables.SetItemText(3, "ccc");
+	c.SetValue(1);*/
 }
 
 PogoQtyFormulaDialog::~PogoQtyFormulaDialog()
@@ -61,6 +72,21 @@ void PogoQtyFormulaDialog::SetPogoElement(PogoElementWithData& element)
 {
 	this->element = element;
 	this->edtCalculatedValue.SetText(GS::UniString::Printf("%.2f", this->element.ParseFormula(edtFormula.GetText())));
+
+	popupVariables.DeleteAllItems();
+
+	API_Element tmpElement;
+	BNZeroMemory(&tmpElement, sizeof(API_Element));
+	tmpElement.header.guid = element.guid;
+
+	if (ACAPI_Element_Get(&tmpElement) == NoError) {
+
+		GS::Array<GS::UniString> elementVariables = (ElementFuncsFactory::Get())->GetAvailebleVariables(tmpElement);
+		for (GS::USize i = 0; i < elementVariables.GetSize(); i++) {
+			popupVariables.AppendItem();
+			popupVariables.SetItemText(popupVariables.GetItemCount(), elementVariables.Get(i));
+		}
+	}
 }
 
 void PogoQtyFormulaDialog::RecalculateQtyValue()
@@ -121,5 +147,16 @@ void PogoQtyFormulaDialog::ButtonClicked(const DG::ButtonClickEvent& ev)
 
 	if (ev.GetSource() == &btnRecalc) {
 		RecalculateQtyValue();
+	}
+}
+
+void PogoQtyFormulaDialog::UserControlChanged(const DG::UserControlChangeEvent& ev)
+{
+	if (ev.GetSource() == &popupVariables) {
+		GS::UIndex selectedItem = popupVariables.GetSelectedItem();
+
+		edtFormula.SetText(edtFormula.GetText() + popupVariables.GetItemText(selectedItem));
+
+		//ShowMessage(popupVariables.GetItemText(selectedItem));
 	}
 }

@@ -64,6 +64,20 @@ GS::UniString ElementFuncsFactory::GetName(const API_Element element)
     return result;
 }
 
+GS::Array<GS::UniString> ElementFuncsFactory::GetAvailebleVariables(const API_Element element)
+{
+    IElementFuncs* elFuncs = GetClass(element.header.typeID);
+    GS::Array<GS::UniString> result = {};
+
+    if (elFuncs) {
+        result = elFuncs->GetAvailebleVariables();
+        delete elFuncs;
+    }
+    elFuncs = NULL;
+
+    return result;
+}
+
 bool ElementFuncsFactory::SetVariables(const API_Element element, CMathParser& MP)
 {
     IElementFuncs* elFuncs = GetClass(element.header.typeID);

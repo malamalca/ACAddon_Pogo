@@ -16,14 +16,20 @@
 #include	"DG.h"
 #include	"DGModule.hpp"
 #include	"DGPanel.hpp"
+#include	"DGUserControl.hpp"
 #include	"PogoElementsList.hpp"
 #include	"PogoItem.hpp"
+
+#include	"UC.h"
+#include	"UCModule.hpp"
+#include	"UCPopup.hpp"
 
 // --- Pogo Qty Formula Modal Dialog ------------------------------------------------------------ 
 class PogoQtyFormulaDialog : public DG::ModalDialog,
 	public DG::PanelObserver,
 	public DG::ButtonItemObserver,
-	public DG::CompoundItemObserver
+	public DG::CompoundItemObserver,
+	public DG::UserControlObserver
 { 
 
 protected: 
@@ -35,6 +41,7 @@ protected:
 		edtFormulaId		= 6,
 		edtCalculatedValueId= 8,
 		btnRecalcId			= 9,
+		popupVariablesId	= 10,
 	}; 
 
 	DG::TextEdit edtQtyDescript;
@@ -43,12 +50,14 @@ protected:
 	DG::Button  btnOk;
 	DG::Button  btnCancel;	
 	DG::Button	btnRecalc;
+	UC::PopupMenu popupVariables;
 
 	virtual void	PanelOpened(const DG::PanelOpenEvent& ev) override;
 	virtual void    PanelResized(const DG::PanelResizeEvent& ev) override;
 	virtual void	PanelCloseRequested(const DG::PanelCloseRequestEvent& ev, bool* accepted) override;
 	
-	virtual void	ButtonClicked(const DG::ButtonClickEvent& ev)	override;
+	virtual void	ButtonClicked(const DG::ButtonClickEvent& ev) override;
+	virtual void	UserControlChanged(const DG::UserControlChangeEvent& ev) override;
 
 public:
 	PogoItem item;

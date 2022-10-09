@@ -9,8 +9,9 @@
 
 class MorphElementFuncs : public IElementFuncs {
 public:
-    GS::UniString getName() override { return GS::UniString("Morph"); };
-    void SetVariables(const API_Element element, CMathParser& MP) override;
+    GS::UniString               getName() override { return GS::UniString("Morph"); };
+    GS::Array<GS::UniString>    GetAvailebleVariables() { return { "Volume", "Area" }; };
+    void                        SetVariables(const API_Element element, CMathParser& MP) override;
 };
 
 #endif

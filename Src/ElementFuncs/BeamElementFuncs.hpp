@@ -9,8 +9,9 @@
 
 class BeamElementFuncs : public IElementFuncs {
 public:
-    GS::UniString getName() override { return GS::UniString("Beam"); };
-    void SetVariables(const API_Element element, CMathParser& MP) override;
+    GS::UniString               getName() override { return GS::UniString("Beam"); };
+    GS::Array<GS::UniString>    GetAvailebleVariables() { return {"Length", "ProjectionLength", "Width", "Height"}; };
+    void                        SetVariables(const API_Element element, CMathParser& MP) override;
 };
 
 #endif

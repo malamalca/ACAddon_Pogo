@@ -1,5 +1,5 @@
 #if !defined (I_ELEMENT_FUNCS_H)
-#define I_ELEMENT_FUNCS_H
+#define I_ELEMENT_FUNCS_H2
 
 #pragma once
 
@@ -16,7 +16,8 @@ public:
 	);
 
     virtual GS::UniString getName() { return GS::UniString(""); };
-    virtual void SetVariables(const API_Element element, CMathParser& MP) {};
+	virtual GS::Array<GS::UniString> GetAvailebleVariables() = 0;
+    virtual void SetVariables(const API_Element element, CMathParser& MP) = 0;
 };
 
 #endif

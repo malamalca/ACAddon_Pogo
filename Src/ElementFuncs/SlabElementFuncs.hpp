@@ -9,8 +9,9 @@
 
 class SlabElementFuncs : public IElementFuncs {
 public:
-    GS::UniString getName() override { return GS::UniString("Slab"); };
-    void SetVariables(const API_Element element, CMathParser& MP) override;
+    GS::UniString               getName() override { return GS::UniString("Slab"); };
+    GS::Array<GS::UniString>    GetAvailebleVariables() { return { "Volume", "Area", "Perimeter" }; };
+    void                        SetVariables(const API_Element element, CMathParser& MP) override;
 };
 
 #endif

@@ -9,8 +9,9 @@
 
 class ColumnElementFuncs : public IElementFuncs {
 public:
-    GS::UniString getName() override { return GS::UniString("Column"); };
-    void SetVariables(const API_Element element, CMathParser& MP) override;
+    GS::UniString               getName() override { return GS::UniString("Column"); };
+    GS::Array<GS::UniString>    GetAvailebleVariables() { return { "CoreArea", "CoreVolume", "Height" }; };
+    void                        SetVariables(const API_Element element, CMathParser& MP) override;
 };
 
 #endif
