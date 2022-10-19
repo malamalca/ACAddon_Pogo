@@ -11,7 +11,7 @@ public:
 	API_Guid guid;
 	PogoLinkedQties* qties;
 
-	GS::UniString PogoElementWithData::RESTCreateQty(const PogoItem& item, const GS::UniString& descript, const double& value);
+	GS::UniString PogoElementWithData::RESTCreateQty(const PogoItem& item, const GS::UniString& formula, const GS::UniString& descript, const double& value);
 	GS::UniString XMLExtractQtyId(GS::UniString& XML);
 
 	bool   ParseFormula(const GS::UniString& formula, double& result);

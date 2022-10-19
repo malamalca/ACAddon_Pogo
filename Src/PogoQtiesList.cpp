@@ -5,71 +5,79 @@
 #include	"GSXMLDOMBuilder.hpp"
 #include	"GSXMLDOMReader.hpp"
 #include	"xercesc/dom/DOM.hpp"
+#include	"xercesc/util/XMLString.hpp"
 
+#include	"PogoQty.hpp"
 #include	"PogoQtiesList.hpp"
-#include	"PogoTypes.h"
 #include	"PogoHttpClient.hpp"
-#include	"PogoSettings.hpp"
 #include	"ShowMessage.hpp"
 
-PogoQtiesList::PogoQtiesList()
+bool PogoQtiesList::FetchByItem(const GS::UniString ItemId)
 {
-	PogoSettings::LoadPogoSettingsFromPreferences(pogoSettings);
+	return Fetch("/qties/index/" + ItemId + ".xml");
 }
 
-PogoQtiesList::~PogoQtiesList()
+bool PogoQtiesList::Fetch(const GS::UniString url)
 {
-}
+	GS::UniString XMLData;
+	bool success = HttpRequest(HTTP::MessageHeader::Method::Get, url, "", XMLData);
 
-
-bool PogoQtiesList::RESTSync()
-{
-	using namespace HTTP::MessageHeader;
-
-	GS::UniString host = pogoSettings.Host;
-	GS::UniString url = "/qties/update.xml";
-	GS::UniString username = pogoSettings.Username;
-	GS::UniString password = pogoSettings.Password;
-
-	GS::UniString postData;
-
-	for (unsigned short i = 0; i < GetSize(); i++) {
-		if (!postData.IsEmpty()) {
-			postData.Append("&");
-		}
-
-		postData.Append(GS::UniString::Printf("%d[id]=%s", i, Get(i).qty_id));
-		postData.Append("&");
-		postData.Append(GS::UniString::Printf("%d[descript]=%s", i, Get(i).descript));
-		postData.Append("&");
-		postData.Append(GS::UniString::Printf("%d[qty_value_native]=%.2f", i, Get(i).last_value));
+	if (!success || XMLData.IsEmpty()) {
+		ShowMessage("Cannot fetch Qties.");
+		return false;
 	}
 
-	bool success = HttpRequest(Method::Post, host, url, username, password, postData);
-
-	return success;
+	if (ParseXml(XMLData)) {
+		return true;
+	}
+	else {
+		ShowMessage("Cannot parse Qties XML.");
+		return false;
+	}
 }
 
-bool PogoQtiesList::RESTDelete()
+bool PogoQtiesList::ParseXml(GS::UniString XML)
 {
-	using namespace HTTP::MessageHeader;
+	Clear();
+	try {
+		const char* xmlData = XML.ToCStr().Get();
+		GSXML::DOMReader xmlReader(reinterpret_cast<const unsigned char*>(xmlData), (GS::USize)strlen(xmlData), "qties");
 
-	GS::UniString host = pogoSettings.Host;
-	GS::UniString url = "/qties/delete.xml";
-	GS::UniString username = pogoSettings.Username;
-	GS::UniString password = pogoSettings.Password;
+		xercesc::DOMElement* root = xmlReader.GetActualNode();
 
-	GS::UniString postData;
+		GS::UniString qtyNodeName("qty");
+		xercesc::DOMNodeList* qties = root->getElementsByTagName(qtyNodeName.ToUStr().Get());
 
-	for (unsigned short i = 0; i < GetSize(); i++) {
-		if (!postData.IsEmpty()) {
-			postData.Append("&");
+		for (XMLSize_t i = 0; i < qties->getLength(); ++i)
+		{
+			xercesc::DOMElement* qtyNode = dynamic_cast<xercesc::DOMElement*>(qties->item(i));
+
+			PogoQty qty;
+
+			for (short j = 0; j < sizeof(fieldList); j++) {
+				xercesc::DOMNodeList* aNode = qtyNode->getElementsByTagName(GS::UniString(fieldList[j].name).ToUStr().Get());
+				if (aNode->getLength() > 0) {
+					switch (fieldList[j].type) {
+						case DbFT_String:
+							qty.SetValue(fieldList[j].name, GS::UniString(aNode->item(0)->getTextContent()));
+							break;
+						case DbFT_Int:
+							qty.SetValue(fieldList[j].name, atoi(xercesc::XMLString::transcode(aNode->item(0)->getTextContent())));
+							break;
+						case DbFT_Double:
+							qty.SetValue(fieldList[j].name, atof(xercesc::XMLString::transcode(aNode->item(0)->getTextContent())));
+							break;
+					}
+				}
+			}
+
+			Push(qty);
+
 		}
-
-		postData.Append(GS::UniString::Printf("%d[id]=%s", i, Get(i).qty_id));
+	}
+	catch (...) {
+		return false;
 	}
 
-	bool success = HttpRequest(Method::Post, host, url, username, password, postData);
-
-	return success;
+	return true;
 }

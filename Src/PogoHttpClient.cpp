@@ -15,6 +15,7 @@
 
 	#include    "HTTP\Client\ClientConnection.hpp"
 	#include	"PogoHttpClient.hpp"
+	#include	"PogoSettings.hpp"
 
 #ifdef POGO_USE_CURL
 	#include	<curl/curl.h>
@@ -50,10 +51,12 @@
 		return realsize;
 	}
 
-	GS::GSSize HttpRequestToBuffer(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& host, const GS::UniString& url, const GS::UniString& username, const GS::UniString& password, const GS::UniString& data, GS::GSHandle& buffer)
+	GS::GSSize HttpRequestToBuffer(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& url, const GS::UniString& data, GS::GSHandle& buffer)
 	{
 		CURL* curl;
 		CURLcode res;
+		PogoSettings pogoSettings;
+		PogoSettings::LoadPogoSettingsFromPreferences(pogoSettings);
 
 		if (buffer == nullptr) buffer = (char**)BMAllocateHandle(1, ALLOCATE_CLEAR, 0);
 
@@ -61,8 +64,8 @@
 		chunk.memory = buffer;
 		chunk.size = 0;
 
-		GS::UniString fullUrl = host + url;
-		GS::UniString authString = username + ":" + password;
+		GS::UniString fullUrl = pogoSettings.Host + url;
+		GS::UniString authString = pogoSettings.Username + ":" + pogoSettings.Password;
 
 		//curl_global_init(CURL_GLOBAL_ALL);
 		curl = curl_easy_init();
@@ -115,10 +118,10 @@
 	// -----------------------------------------------------------------------------
 	// Download Public Webpage
 	// -----------------------------------------------------------------------------
-	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& host, const GS::UniString& url, const GS::UniString& username, const GS::UniString& password, const GS::UniString& data, GS::UniString& result)
+	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& url, const GS::UniString& data, GS::UniString& result)
 	{
 		char** buffer = nullptr;
-		GS::GSSize bufLen = HttpRequestToBuffer(method, host, url, username, password, data, buffer);
+		GS::GSSize bufLen = HttpRequestToBuffer(method, url, data, buffer);
 
 		if (bufLen > 0) {
 			result = GS::UniString(*buffer, bufLen);
@@ -129,23 +132,27 @@
 		}
 		return true;
 	}
-	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& host, const GS::UniString& url, const GS::UniString& username, const GS::UniString& password, const GS::UniString& data)
+	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& url, const GS::UniString& data)
 	{
 		char** buffer = nullptr;
-		GS::GSSize bufLen = HttpRequestToBuffer(method, host, url, username, password, data, buffer);
+		GS::GSSize bufLen = HttpRequestToBuffer(method, url, data, buffer);
 		BMKillHandle((GS::GSHandle*)&buffer);
 
 		return bufLen >= 0;
 	}
 #else
-	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& host, const GS::UniString& url, const GS::UniString& username, const GS::UniString& password, const GS::UniString& data, GS::UniString& result)
+	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& url, const GS::UniString& data, GS::UniString& result)
 	{
 		using namespace HTTP::Client;
 		using namespace HTTP::MessageHeader;
 		using namespace GS::IBinaryChannelUtilities;
 
-		DBPrintf("HOST %s\n", host.ToCStr(0, MaxUSize, GSCharCode::CC_Legacy).Get());
-		IO::URI::URI connectionUrl(host);
+		PogoSettings pogoSettings;
+		PogoSettings::LoadPogoSettingsFromPreferences(pogoSettings);
+
+
+		DBPrintf("HOST %s\n", pogoSettings.Host.ToCStr(0, MaxUSize, GSCharCode::CC_Legacy).Get());
+		IO::URI::URI connectionUrl(pogoSettings.Host);
 
 		ClientConnection clientConnection(connectionUrl);
 
@@ -157,7 +164,7 @@
 			Request postRequest(method, url);
 
 			RequestHeaderFieldCollection& headers = postRequest.GetRequestHeaderFieldCollection();
-			Authentication::BasicAuthentication auth(username, password);
+			Authentication::BasicAuthentication auth(pogoSettings.Username, pogoSettings.Password);
 			auth.HandleRequestHeaderFieldCollection(headers);
 			headers.Add(HeaderFieldName::ContentType, "application/x-www-form-urlencoded");
 
@@ -191,9 +198,9 @@
 		return false;
 	}
 
-	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& host, const GS::UniString& url, const GS::UniString& username, const GS::UniString& password, const GS::UniString& data)
+	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& url, const GS::UniString& data)
 	{
 		GS::UniString outputData;
-		return HttpRequest(method, host, url, username, password, data, outputData);
+		return HttpRequest(method, url, data, outputData);
 	}
 #endif

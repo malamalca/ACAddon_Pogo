@@ -14,13 +14,9 @@
 #define POGO_HTTPCLIENT_HPP
 
 bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, 
-	const GS::UniString& host, const GS::UniString& url, 
-	const GS::UniString& username, const GS::UniString& password, 
-	const GS::UniString& data, GS::UniString& result);
+	const GS::UniString& url, const GS::UniString& data, GS::UniString& result);
 bool HttpRequest(const HTTP::MessageHeader::Method::Id& method,
-	const GS::UniString& host, const GS::UniString& url,
-	const GS::UniString& username, const GS::UniString& password,
-	const GS::UniString& data);
+	const GS::UniString& url, const GS::UniString& data);
 /*bool HttpRequest(const HTTP::MessageHeader::Method::Id& method,
 	const GS::UniString& host, const GS::UniString& url, 
 	const GS::UniString& username, const GS::UniString& password, 

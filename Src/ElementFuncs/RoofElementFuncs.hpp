@@ -10,7 +10,7 @@
 class RoofElementFuncs : public IElementFuncs {
 public:
     GS::UniString               getName() override { return GS::UniString("Roof"); };
-    GS::Array<GS::UniString>    GetAvailebleVariables() { return { "Volume", "Area", "ProjectionArea", "Perimeter"}; };
+    GS::Array<GS::UniString>    GetAvailebleVariables() { return { "Volume", "CoreVolume", "Area", "ProjectionArea", "Perimeter"}; };
     void                        SetVariables(const API_Element element, CMathParser& MP) override;
 };
 

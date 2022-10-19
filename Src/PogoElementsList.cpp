@@ -5,7 +5,7 @@
 
 #include    "HTTP\Client\ClientConnection.hpp"
 #include	"PogoHttpClient.hpp"
-#include	"PogoQtiesList.hpp"
+#include	"QtiesList.hpp"
 #include	"ShowMessage.hpp"
 
 PogoElementsList::~PogoElementsList()
@@ -76,7 +76,7 @@ void PogoElementsList::GetSelectedElements(bool onlyWithData)
 void PogoElementsList::DeleteData()
 {
 	API_Elem_Head head;
-	PogoQtiesList elementsQties;
+	QtiesList elementsQties;
 
 	for (const PogoElementWithData& El : *this) {
 		for (short i = 0; i < (short)El.qties->count; i++) {
@@ -109,7 +109,7 @@ bool PogoElementsList::AttachQty(const PogoItem& item, const GS::UniString& desc
 		// 2. create qty
 		double qtyValue;
 		if (El.ParseFormula(formula, qtyValue)) {
-			GS::UniString qtyId = El.RESTCreateQty(item, descript, qtyValue);
+			GS::UniString qtyId = El.RESTCreateQty(item, formula, descript, qtyValue);
 
 			if (qtyId.IsEmpty()) {
 				return false;
@@ -168,7 +168,7 @@ bool PogoElementsList::UpdateQtyValues()
 	return true;
 }
 
-bool PogoElementsList::SendUpdate(const GS::UniString& host, const GS::UniString& username, const GS::UniString& password)
+bool PogoElementsList::SendUpdate()
 {
 	// prepare POST request
 	using namespace HTTP::MessageHeader;
@@ -185,6 +185,10 @@ bool PogoElementsList::SendUpdate(const GS::UniString& host, const GS::UniString
 		for (unsigned short j = 0; j < El.qties->count; j++) {
 			postData.Append(GS::UniString::Printf("%d[id]=%s", i, El.qties->qtyData[j].qty_id));
 			postData.Append("&");
+			postData.Append(GS::UniString::Printf("%d[guid]=%s", i, APIGuid2GSGuid(El.guid).ToUniString().ToCStr().Get()));
+			postData.Append("&");
+			postData.Append(GS::UniString::Printf("%d[formula]=%s", i, El.qties->qtyData[j].formula));
+			postData.Append("&");
 			postData.Append(GS::UniString::Printf("%d[descript]=%s", i, El.qties->qtyData[j].descript));
 			postData.Append("&");
 			postData.Append(GS::UniString::Printf("%d[qty_value_native]=%.2f", i, El.qties->qtyData[j].last_value));
@@ -194,5 +198,5 @@ bool PogoElementsList::SendUpdate(const GS::UniString& host, const GS::UniString
 	}
 
 	// do request
-	return HttpRequest(HTTP::MessageHeader::Method::Post, host, url, username, password, postData);
+	return HttpRequest(HTTP::MessageHeader::Method::Post, url, postData);
 }

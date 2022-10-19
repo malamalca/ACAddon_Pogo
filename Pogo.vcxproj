@@ -68,7 +68,7 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ObjectFileName>$(IntDir)\%(Directory)</ObjectFileName>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>false</BrowseInformation>
       <BrowseInformationFile>$(IntDir)</BrowseInformationFile>
@@ -108,7 +108,7 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ObjectFileName>$(IntDir)\%(Directory)</ObjectFileName>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>false</BrowseInformation>
       <BrowseInformationFile>$(IntDir)</BrowseInformationFile>
@@ -138,8 +138,10 @@
     <ClInclude Include="Src\CMathParser.h" />
     <ClInclude Include="Src\dlgPogoData.hpp" />
     <ClInclude Include="Src\dlgPogoItemSelect.hpp" />
+    <ClInclude Include="Src\dlgPogoItemShow.hpp" />
     <ClInclude Include="Src\dlgPogoQtyFormula.hpp" />
     <ClInclude Include="Src\dlgPogoSettings.hpp" />
+    <ClInclude Include="Src\ElementFuncs\IElementFuncs.hpp" />
     <ClInclude Include="Src\ElementFuncs\BeamElementFuncs.hpp" />
     <ClInclude Include="Src\ElementFuncs\ColumnElementFuncs.hpp" />
     <ClInclude Include="Src\ElementFuncs\ElementFuncsFactory.hpp" />
@@ -150,6 +152,7 @@
     <ClInclude Include="Src\ElementFuncs\PolyLineElementFuncs.hpp" />
     <ClInclude Include="Src\ElementFuncs\RoofElementFuncs.hpp" />
     <ClInclude Include="Src\ElementFuncs\SlabElementFuncs.hpp" />
+    <ClInclude Include="Src\ElementFuncs\WallElementFuncs.hpp" />
     <ClInclude Include="Src\PogoCategoriesList.hpp" />
     <ClInclude Include="Src\PogoCategory.hpp" />
     <ClInclude Include="Src\PogoElementsList.hpp" />
@@ -159,6 +162,8 @@
     <ClInclude Include="Src\PogoItemsList.hpp" />
     <ClInclude Include="Src\PogoPalette.h" />
     <ClInclude Include="Src\PogoQtiesList.hpp" />
+    <ClInclude Include="Src\QtiesList.hpp" />
+    <ClInclude Include="Src\PogoQty.hpp" />
     <ClInclude Include="Src\PogoSection.hpp" />
     <ClInclude Include="Src\PogoSectionsList.hpp" />
     <ClInclude Include="Src\PogoSettings.hpp" />
@@ -172,6 +177,7 @@
     <ClCompile Include="Src\CMathParser.cpp" />
     <ClCompile Include="Src\dlgPogoData.cpp" />
     <ClCompile Include="Src\dlgPogoItemSelect.cpp" />
+    <ClCompile Include="Src\dlgPogoItemShow.cpp" />
     <ClCompile Include="Src\dlgPogoQtyFormula.cpp" />
     <ClCompile Include="Src\dlgPogoSettings.cpp" />
     <ClCompile Include="Src\ElementFuncs\BeamElementFuncs.cpp" />
@@ -179,20 +185,23 @@
     <ClCompile Include="Src\ElementFuncs\ElementFuncsFactory.cpp" />
     <ClCompile Include="Src\ElementFuncs\HatchElementFuncs.cpp" />
     <ClCompile Include="Src\ElementFuncs\IElementFuncs.cpp" />
-    <ClCompile Include="Src\ElementFuncs\IElementFuncs.hpp" />
     <ClCompile Include="Src\ElementFuncs\LineElementFuncs.cpp" />
     <ClCompile Include="Src\ElementFuncs\MorphElementFuncs.cpp" />
     <ClCompile Include="Src\ElementFuncs\ObjectElementFuncs.cpp" />
     <ClCompile Include="Src\ElementFuncs\PolyLineElementFuncs.cpp" />
     <ClCompile Include="Src\ElementFuncs\RoofElementFuncs.cpp" />
     <ClCompile Include="Src\ElementFuncs\SlabElementFuncs.cpp" />
+    <ClCompile Include="Src\ElementFuncs\WallElementFuncs.cpp" />
     <ClCompile Include="Src\PogoCategoriesList.cpp" />
     <ClCompile Include="Src\PogoElementsList.cpp" />
     <ClCompile Include="src\PogoElementWithData.cpp" />
     <ClCompile Include="Src\PogoHttpClient.cpp" />
+    <ClCompile Include="Src\PogoItem.cpp" />
     <ClCompile Include="Src\PogoItemsList.cpp" />
     <ClCompile Include="Src\PogoPalette.cpp" />
     <ClCompile Include="Src\PogoQtiesList.cpp" />
+    <ClCompile Include="Src\QtiesList.cpp" />
+    <ClCompile Include="Src\PogoQty.cpp" />
     <ClCompile Include="Src\PogoSectionsList.cpp" />
     <ClCompile Include="Src\PogoSettings.cpp" />
     <ClCompile Include="Src\ShowMessage.cpp" />

@@ -7,18 +7,27 @@
 #include	"ACAPinc.h"	
 
 #include	"PogoTypes.h"
-#include	"PogoSettings.hpp"
+#include	"PogoQty.hpp"
 
-class PogoQtiesList : public GS::Array<PogoQtyData>
+class PogoQtiesList : public GS::Array<PogoQty>
 {
-	protected:
-		PogoSettings pogoSettings;
 	public:
-		PogoQtiesList();
-		~PogoQtiesList();
+		bool Fetch(const GS::UniString url);
+		bool FetchByItem(const GS::UniString QtyId);
+	private:
+		DbField	fieldList[9] = {
+			{"id", DbFT_String},
+			{"descript", DbFT_String},
+			{"sort_order", DbFT_Int},
+			{"aux_formula", DbFT_String},
+			{"aux_value", DbFT_Double},
+			{"qty_formula", DbFT_String},
+			{"qty_value", DbFT_Double},
+			{"guid", DbFT_String},
+			{"formula", DbFT_String},
+		};
 
-		bool RESTSync();
-		bool RESTDelete();
+		bool ParseXml(GS::UniString XML);
 };
 
 

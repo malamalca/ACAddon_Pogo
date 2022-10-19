@@ -18,7 +18,7 @@ class PogoElementsList : public GS::Array<PogoElementWithData>
 		void DeleteData();
 		bool AttachQty(const PogoItem&, const GS::UniString& descript, const GS::UniString& formula);
 		bool UpdateQtyValues();
-		bool SendUpdate(const GS::UniString& host, const GS::UniString& username = "", const GS::UniString& password = "");
+		bool SendUpdate();
 };
 
 

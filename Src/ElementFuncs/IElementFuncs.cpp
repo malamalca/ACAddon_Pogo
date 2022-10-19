@@ -8,13 +8,16 @@ bool IElementFuncs::GetQuantities(const API_Element& element, API_QuantitiesMask
 {
 	GSErrCode           err;
 	API_Quantities      quantities;
+	API_QuantityPar		params;
 
 	quantities.elements = &quantity;
 	quantities.composites = &composites;
 
+	params.minOpeningSize = 0;
+
 	BNZeroMemory(&quantity, sizeof(API_ElementQuantity));
 
-	err = ACAPI_Element_GetQuantities(element.header.guid, nullptr, &quantities, &mask);
+	err = ACAPI_Element_GetQuantities(element.header.guid, &params, &quantities, &mask);
 
 	return err == NoError;
 }
@@ -28,15 +31,18 @@ bool IElementFuncs::GetQuantities(const API_Element& element, API_QuantitiesMask
 {
 	GSErrCode           err;
 	API_Quantities      quantities;
+	API_QuantityPar		params;
 
 	quantities.elements = &quantity;
 	quantities.composites = &composites;
 	quantities.elemPartQuantities = &elemPartQuantities;
 	quantities.elemPartComposites = &elemPartComposites;
 
+	params.minOpeningSize = 0;
+
 	BNZeroMemory(&quantity, sizeof(API_ElementQuantity));
 
-	err = ACAPI_Element_GetQuantities(element.header.guid, nullptr, &quantities, &mask);
+	err = ACAPI_Element_GetQuantities(element.header.guid, &params, &quantities, &mask);
 
 	return err == NoError;
 }

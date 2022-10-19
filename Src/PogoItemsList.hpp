@@ -13,14 +13,15 @@ class PogoItemsList : public GS::Array<PogoItem>
 {
 	protected:
 		PogoSettings pogoSettings;
-
-		bool ParseXml(GS::UniString XML);
-
 	public:
 		PogoItemsList();
 		~PogoItemsList();
 
-		bool Fetch(GS::UniString SectionId);
+		bool Fetch(const GS::UniString url);
+		bool FetchBySection(const GS::UniString SectionId);
+		bool FetchByQty(const GS::UniString QtyId);
+	private:
+		bool ParseXml(GS::UniString XML);
 };
 
 

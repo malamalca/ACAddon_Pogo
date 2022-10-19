@@ -13,33 +13,33 @@
 #include	"GSXMLDOMBuilder.hpp"
 #include	"GSXMLDOMReader.hpp"
 #include	"xercesc/dom/DOM.hpp"
+#include	"xercesc/util/XMLString.hpp"
 
 #include	"PogoHttpClient.hpp"
 #include	"ShowMessage.hpp"
 
 PogoItemsList::PogoItemsList()
 {
-	PogoSettings::LoadPogoSettingsFromPreferences(pogoSettings);
 }
 
 PogoItemsList::~PogoItemsList()
 {
 }
 
-
-bool PogoItemsList::Fetch(GS::UniString SectionId)
+bool PogoItemsList::FetchBySection(const GS::UniString SectionId)
 {
-	using namespace HTTP::Client;
-	using namespace HTTP::MessageHeader;
-	using namespace GS::IBinaryChannelUtilities;
+	return Fetch("/items/index.xml?section=" + SectionId);
+}
 
-	GS::UniString host = pogoSettings.Host;
-	GS::UniString url = "/items/index/" + SectionId + ".xml";
-	GS::UniString username = pogoSettings.Username;
-	GS::UniString password = pogoSettings.Password;
+bool PogoItemsList::FetchByQty(const GS::UniString QtyId)
+{
+	return Fetch("/items/index.xml?qty=" + QtyId);
+}
 
+bool PogoItemsList::Fetch(const GS::UniString url)
+{
 	GS::UniString XMLData;
-	bool success = HttpRequest(Method::Get, host, url, username, password, "", XMLData);
+	bool success = HttpRequest(HTTP::MessageHeader::Method::Get, url, "", XMLData);
 
 	if (!success || XMLData.IsEmpty()) {
 		ShowMessage("Cannot fetch Items.");
@@ -68,6 +68,8 @@ bool PogoItemsList::ParseXml(GS::UniString XML)
 		GS::UniString idNodeName("id");
 		GS::UniString descriptNodeName("descript");
 		GS::UniString unitNodeName("unit");
+		GS::UniString qtyNodeName("qty");
+		GS::UniString priceNodeName("price");
 
 		xercesc::DOMNodeList* items = root->getElementsByTagName(itemNodeName.ToUStr().Get());
 		for (XMLSize_t i = 0; i < items->getLength(); ++i)
@@ -89,6 +91,16 @@ bool PogoItemsList::ParseXml(GS::UniString XML)
 			xercesc::DOMNodeList* unitNode = itemNode->getElementsByTagName((const XMLCh*)unitNodeName.ToUStr().Get());
 			if (unitNode->getLength() > 0) {
 				item.unit = unitNode->item(0)->getTextContent();
+			}
+
+			xercesc::DOMNodeList* qtyNode = itemNode->getElementsByTagName((const XMLCh*)qtyNodeName.ToUStr().Get());
+			if (qtyNode->getLength() > 0) {
+				item.qty = atof(xercesc::XMLString::transcode(qtyNode->item(0)->getTextContent()));
+			}
+
+			xercesc::DOMNodeList* priceNode = itemNode->getElementsByTagName((const XMLCh*)priceNodeName.ToUStr().Get());
+			if (priceNode->getLength() > 0) {
+				item.price = atof(xercesc::XMLString::transcode(priceNode->item(0)->getTextContent()));
 			}
 
 			Push(item);

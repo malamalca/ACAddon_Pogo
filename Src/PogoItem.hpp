@@ -9,4 +9,5 @@ public:
 	GS::UniString descript;
 	GS::UniString unit;
 	double price;
+	double qty;
 };

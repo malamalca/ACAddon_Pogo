@@ -135,10 +135,7 @@ void PogoSendQties()
 		return NoError;
 	});
 
-	PogoSettings pogoSettings;
-	PogoSettings::LoadPogoSettingsFromPreferences(pogoSettings);
-
-	data.SendUpdate(pogoSettings.Host, pogoSettings.Username, pogoSettings.Password);
+	data.SendUpdate();
 } // PogoSendQties
 
 // -----------------------------------------------------------------------------

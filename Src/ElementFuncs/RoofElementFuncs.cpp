@@ -11,11 +11,21 @@ void RoofElementFuncs::SetVariables(const API_Element element, CMathParser& MP)
 	ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, roof, volume);
 	ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, roof, perimeter);
 	ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, roof, contourArea);
+	ACAPI_ELEMENT_COMPOSITES_QUANTITY_MASK_SETFULL(mask);
 
 	if (GetQuantities(element, mask, quantity, composites)) {
 		MP.AddVariable("Perimeter", quantity.roof.perimeter);
 		MP.AddVariable("ProjectionArea", quantity.roof.contourArea);
 		MP.AddVariable("Area", quantity.roof.topSurface);
 		MP.AddVariable("Volume", quantity.roof.volume);
+
+		double coreVolume = quantity.roof.volume;
+		for (UInt32 i = 0; i < composites.GetSize(); i++) {
+			if ((composites[i].flags & APISkin_Core) != 0) {
+				coreVolume += composites[i].volumes;
+			}
+		}
+		MP.AddVariable("CoreVolume", coreVolume);
 	}
+
 }

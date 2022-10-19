@@ -25,11 +25,7 @@ PogoCategoriesList::~PogoCategoriesList()
 bool PogoCategoriesList::Fetch()
 {
 	using namespace HTTP::MessageHeader;
-
-	GS::UniString host = pogoSettings.Host;
 	GS::UniString url = "/categories/index/" + pogoSettings.ProjectId + ".xml";
-	GS::UniString username = pogoSettings.Username;
-	GS::UniString password = pogoSettings.Password;
 
 	/*GS::UniString host = "http://192.168.88.20/";
 	GS::UniString url = "/pogo/categories/index/83e37347-85e3-488b-a028-1f79d7006457.xml";
@@ -37,7 +33,7 @@ bool PogoCategoriesList::Fetch()
 	GS::UniString password = "miha3869";*/
 
 	GS::UniString XMLData;
-	bool success = HttpRequest(Method::Get, host, url, username, password, "", XMLData);
+	bool success = HttpRequest(Method::Get, url, "", XMLData);
 
 	if (!success || XMLData.IsEmpty()) {
 		ShowMessage("Cannot fetch Categories.");

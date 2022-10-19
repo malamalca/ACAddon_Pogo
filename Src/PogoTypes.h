@@ -12,3 +12,13 @@ struct PogoLinkedQties {
 	unsigned short count = 0;
 };
 
+typedef enum {
+	DbFT_String = 0,
+	DbFT_Int = 1,
+	DbFT_Double = 2
+} DbFieldTypes;
+
+struct DbField {
+	char name[40];
+	DbFieldTypes type;
+};

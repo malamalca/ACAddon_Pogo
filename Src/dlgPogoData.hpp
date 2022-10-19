@@ -32,11 +32,12 @@ protected:
 
 	enum Controls {
 		btnCloseId       = 5,
-		cbElementsId  = 2,
-		lsQtiesId     = 4,
-		btnSyncQtyId = 6,
-		btnDeleteQtyId = 7,
-		btnEditQtyId = 8,
+		cbElementsId     = 2,
+		lsQtiesId        = 4,
+		btnSyncQtyId     = 6,
+		btnDeleteQtyId   = 7,
+		btnEditQtyId     = 8,
+		btnInfoQtyId     = 9,
 	}; 
 
 	PogoElementWithData _element;
@@ -48,6 +49,7 @@ protected:
 	DG::Button btnSyncQty;
 	DG::Button btnDeleteQty;
 	DG::Button btnEditQty;
+	DG::Button btnInfoQty;
 
 	virtual void	PanelOpened(const DG::PanelOpenEvent& ev) override;
 	virtual void	ButtonClicked(const DG::ButtonClickEvent& ev)	override;
@@ -70,6 +72,7 @@ private:
 	void OnSyncQtyClick();
 	void OnDeleteQtyClick();
 	void OnEditQtyClick();
+	void OnInfoQtyClick();
 }; 
 
 #endif // POGO_DATA_DIALOG_H

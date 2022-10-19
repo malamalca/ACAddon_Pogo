@@ -44,9 +44,6 @@
     <ClCompile Include="Src\APICommon.c">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="Src\PogoElementsList.cpp">
-      <Filter>Src\Data\Tables</Filter>
-    </ClCompile>
     <ClCompile Include="Src\PogoCategoriesList.cpp">
       <Filter>Src\Data\Tables</Filter>
     </ClCompile>
@@ -80,9 +77,6 @@
     <ClCompile Include="Src\PogoSettings.cpp">
       <Filter>Src\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Src\PogoQtiesList.cpp">
-      <Filter>Src\Data\Tables</Filter>
-    </ClCompile>
     <ClCompile Include="src\PogoElementWithData.cpp">
       <Filter>Src\Data\Entities</Filter>
     </ClCompile>
@@ -90,9 +84,6 @@
       <Filter>Src\Other</Filter>
     </ClCompile>
     <ClCompile Include="Src\ElementFuncs\ElementFuncsFactory.cpp">
-      <Filter>Src\ElementFuncs</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\ElementFuncs\IElementFuncs.hpp">
       <Filter>Src\ElementFuncs</Filter>
     </ClCompile>
     <ClCompile Include="Src\ElementFuncs\ObjectElementFuncs.cpp">
@@ -125,6 +116,27 @@
     <ClCompile Include="Src\ElementFuncs\LineElementFuncs.cpp">
       <Filter>Src\ElementFuncs</Filter>
     </ClCompile>
+    <ClCompile Include="Src\dlgPogoItemShow.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ElementFuncs\WallElementFuncs.cpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PogoQty.cpp">
+      <Filter>Src\Data\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PogoItem.cpp">
+      <Filter>Src\Data\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PogoElementsList.cpp">
+      <Filter>Src\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\QtiesList.cpp">
+      <Filter>Src\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PogoQtiesList.cpp">
+      <Filter>Src\Data\Tables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\PogoTypes.h">
@@ -154,13 +166,7 @@
     <ClInclude Include="Src\PogoCategoriesList.hpp">
       <Filter>Src\Data\Tables</Filter>
     </ClInclude>
-    <ClInclude Include="Src\PogoElementsList.hpp">
-      <Filter>Src\Data\Tables</Filter>
-    </ClInclude>
     <ClInclude Include="Src\PogoItemsList.hpp">
-      <Filter>Src\Data\Tables</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\PogoQtiesList.hpp">
       <Filter>Src\Data\Tables</Filter>
     </ClInclude>
     <ClInclude Include="Src\PogoSectionsList.hpp">
@@ -222,6 +228,27 @@
     </ClInclude>
     <ClInclude Include="Src\ElementFuncs\LineElementFuncs.hpp">
       <Filter>Src\ElementFuncs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\dlgPogoItemShow.hpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\IElementFuncs.hpp">
+      <Filter>Src\Data\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ElementFuncs\WallElementFuncs.hpp">
+      <Filter>Src\ElementFuncs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PogoQty.hpp">
+      <Filter>Src\Data\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PogoElementsList.hpp">
+      <Filter>Src\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\QtiesList.hpp">
+      <Filter>Src\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PogoQtiesList.hpp">
+      <Filter>Src\Data\Tables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

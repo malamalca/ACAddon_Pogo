@@ -156,7 +156,5 @@ void PogoQtyFormulaDialog::UserControlChanged(const DG::UserControlChangeEvent& 
 		GS::UIndex selectedItem = popupVariables.GetSelectedItem();
 
 		edtFormula.SetText(edtFormula.GetText() + popupVariables.GetItemText(selectedItem));
-
-		//ShowMessage(popupVariables.GetItemText(selectedItem));
 	}
 }

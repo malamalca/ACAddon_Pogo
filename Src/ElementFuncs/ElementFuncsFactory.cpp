@@ -1,6 +1,7 @@
 #include "ElementFuncsFactory.hpp"
 #include "ObjectElementFuncs.hpp"
 #include "SlabElementFuncs.hpp"
+#include "WallElementFuncs.hpp"
 #include "ColumnElementFuncs.hpp"
 #include "BeamElementFuncs.hpp"
 #include "RoofElementFuncs.hpp"
@@ -23,6 +24,9 @@ IElementFuncs* ElementFuncsFactory::GetClass(API_ElemTypeID typeId)
             break;
         case API_SlabID:
             return new SlabElementFuncs();
+            break;
+        case API_WallID:
+            return new WallElementFuncs();
             break;
         case API_ColumnID:
             return new ColumnElementFuncs();

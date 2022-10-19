@@ -19,4 +19,18 @@ void BeamElementFuncs::SetVariables(const API_Element element, CMathParser& MP)
 	MP.AddVariable("Width", memo.beamSegments->assemblySegmentData.nominalWidth);
 	MP.AddVariable("Height", memo.beamSegments->assemblySegmentData.nominalHeight);
 	ACAPI_DisposeElemMemoHdls(&memo);
+
+	GS::Array<API_CompositeQuantity> composites;
+	API_ElementQuantity quantity;
+	API_QuantitiesMask  mask;
+
+	ACAPI_ELEMENT_QUANTITY_MASK_CLEAR(mask);
+	ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, beam, area);
+	ACAPI_ELEMENT_QUANTITY_MASK_SET(mask, beam, volume);
+	ACAPI_ELEMENT_COMPOSITES_QUANTITY_MASK_SETFULL(mask);
+
+	if (GetQuantities(element, mask, quantity, composites)) {
+		MP.AddVariable("Area", quantity.beam.area);
+		MP.AddVariable("Volume", quantity.beam.volume);
+	}
 }

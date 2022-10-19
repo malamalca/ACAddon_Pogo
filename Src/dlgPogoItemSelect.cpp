@@ -177,7 +177,7 @@ void PogoItemSelectDialog::UpdateItems()
 		btnOk.Disable();
 		btnCancel.Disable();
 
-		if (items.Fetch(categories.Get(selectedCategory - 1).sections.Get(selectedSection - 1).id)) {
+		if (items.FetchBySection(categories.Get(selectedCategory - 1).sections.Get(selectedSection - 1).id)) {
 			for (short i = 0; i < (short)items.GetSize(); i++) {
 				lsItems.InsertItem(i + 1);
 				lsItems.SetTabItemText(i + 1, 1, "");

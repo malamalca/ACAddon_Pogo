@@ -8,24 +8,20 @@
 #include	"PogoHttpClient.hpp"
 #include	"ElementFuncs/ElementFuncsFactory.hpp"
 
-GS::UniString PogoElementWithData::RESTCreateQty(const PogoItem& item, const GS::UniString& descript, const double& value)
+GS::UniString PogoElementWithData::RESTCreateQty(const PogoItem& item, const GS::UniString& formula, const GS::UniString& descript, const double& value)
 {
 	using namespace HTTP::MessageHeader;
 
-	PogoSettings pogoSettings;
-	PogoSettings::LoadPogoSettingsFromPreferences(pogoSettings);
-
-	GS::UniString host = pogoSettings.Host;
 	GS::UniString url = "/qties/add.xml";
-	GS::UniString username = pogoSettings.Username;
-	GS::UniString password = pogoSettings.Password;
-
 	GS::UniString postData = "";
+
 	postData.Append(GS::UniString::Printf("id=%s", ""));
 	postData.Append("&");
 	postData.Append(GS::UniString::Printf("item_id=%s", item.id.ToCStr().Get()));
 	postData.Append("&");
 	postData.Append(GS::UniString::Printf("guid=%s", APIGuid2GSGuid(this->guid).ToUniString().ToCStr().Get()));
+	postData.Append("&");
+	postData.Append(GS::UniString::Printf("formula=%s", formula.ToCStr().Get()));
 	postData.Append("&");
 	postData.Append(GS::UniString::Printf("descript=%s", descript.ToCStr().Get()));
 	postData.Append("&");
@@ -33,7 +29,7 @@ GS::UniString PogoElementWithData::RESTCreateQty(const PogoItem& item, const GS:
 
 	// do request
 	GS::UniString XMLData;
-	bool success = HttpRequest(Method::Post, host, url, username, password, postData, XMLData);
+	bool success = HttpRequest(Method::Post, url, postData, XMLData);
 	if (!success) {
 		return "";
 	}
