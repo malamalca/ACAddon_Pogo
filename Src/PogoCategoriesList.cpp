@@ -32,10 +32,10 @@ bool PogoCategoriesList::Fetch()
 	GS::UniString username = "miha.nahtigal";
 	GS::UniString password = "miha3869";*/
 
-	GS::UniString XMLData;
+	char* XMLData = nullptr;
 	bool success = HttpRequest(Method::Get, url, "", XMLData);
 
-	if (!success || XMLData.IsEmpty()) {
+	if (!success || strlen(XMLData) == 0) {
 		ShowMessage("Cannot fetch Categories.");
 		return false;
 	}
@@ -49,12 +49,11 @@ bool PogoCategoriesList::Fetch()
 	}
 }
 
-bool PogoCategoriesList::ParseXml(GS::UniString XML)
+bool PogoCategoriesList::ParseXml(const char* XML)
 {
 	Clear();
 	try {
-		const char* xmlData = XML.ToCStr(CC_UTF8).Get();
-		GSXML::DOMReader xmlReader(reinterpret_cast<const unsigned char*>(xmlData), (GS::USize)strlen(xmlData), "categories");
+		GSXML::DOMReader xmlReader(reinterpret_cast<const unsigned char*>(XML), (GS::USize)strlen(XML), "categories");
 
 		xercesc::DOMElement* root = xmlReader.GetActualNode();
 

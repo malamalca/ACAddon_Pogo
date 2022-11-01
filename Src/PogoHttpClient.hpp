@@ -13,8 +13,10 @@
 #ifndef POGO_HTTPCLIENT_HPP
 #define POGO_HTTPCLIENT_HPP
 
-bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, 
-	const GS::UniString& url, const GS::UniString& data, GS::UniString& result);
+/*bool HttpRequest2(const HTTP::MessageHeader::Method::Id& method,
+	const GS::UniString& url, const GS::UniString& data, GS::UniString& result);*/
+bool HttpRequest(const HTTP::MessageHeader::Method::Id& method,
+	const GS::UniString& url, const GS::UniString& data, char* &result);
 bool HttpRequest(const HTTP::MessageHeader::Method::Id& method,
 	const GS::UniString& url, const GS::UniString& data);
 /*bool HttpRequest(const HTTP::MessageHeader::Method::Id& method,

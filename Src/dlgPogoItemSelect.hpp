@@ -56,6 +56,7 @@ protected:
 	virtual void	PopUpChanged(const DG::PopUpChangeEvent& ev) override;
 	virtual void    PanelResized(const DG::PanelResizeEvent& ev) override;
 	virtual void	ListBoxTabFieldUpdate(const DG::ListBoxTabItemUpdateEvent& ev) override;
+	virtual void	ListBoxDoubleClicked(const DG::ListBoxDoubleClickEvent& ev) override;
 	virtual void	ButtonClicked(const DG::ButtonClickEvent& ev)	override;
 
 	void UpdateCategories();

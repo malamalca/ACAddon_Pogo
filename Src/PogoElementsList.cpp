@@ -6,6 +6,7 @@
 #include    "HTTP\Client\ClientConnection.hpp"
 #include	"PogoHttpClient.hpp"
 #include	"QtiesList.hpp"
+#include	"PogoQtiesList.hpp"
 #include	"ShowMessage.hpp"
 
 PogoElementsList::~PogoElementsList()
@@ -36,30 +37,12 @@ void PogoElementsList::GetSelectedElements(bool onlyWithData)
 
 	if (selectionInfo.typeID != API_SelEmpty) {
 		bool hasData = false;
-		for (const API_Neig& neig : selNeigs) {
-			API_Elem_Head head;
-			BNZeroMemory(&head, sizeof(API_Elem_Head));
-			head.guid = neig.guid;
-			
+		for (const API_Neig& neig : selNeigs) {		
 			PogoElementWithData el;
 			BNZeroMemory(&el, sizeof(PogoElementWithData));
-			el.guid = head.guid;
-			el.qties = nullptr;
-
-			API_ElementUserData userData;
-			BNZeroMemory(&userData, sizeof(API_ElementUserData));		
+			el.guid = neig.guid;
 				
-			hasData = false;
-			if (ACAPI_Element_GetUserData(&head, &userData) == NoError) {
-				if (userData.dataHdl != nullptr && userData.platformSign == GS::Act_Platform_Sign) {
-					el.qties = new PogoLinkedQties();
-					BNZeroMemory(el.qties, sizeof(PogoLinkedQties));
-					BNCopyMemory(el.qties, *(userData.dataHdl), sizeof(PogoLinkedQties));
-					BMKillHandle(&userData.dataHdl);
-
-					hasData = true;
-				}
-			}
+			hasData = el.LoadQtiesFromElement();
 
 			if (!onlyWithData || hasData) {
 				this->Push(el);
@@ -90,6 +73,32 @@ void PogoElementsList::DeleteData()
 	}
 
 	elementsQties.RESTDelete();
+}
+
+void PogoElementsList::DeleteDetachedQties()
+{
+	PogoQtiesList qtiesList;
+
+	for (PogoElementWithData& El : *this) {
+		for (short i = (short)El.qties->count-1; i >= 0; i--) {
+			bool success = qtiesList.FetchById(El.qties->qtyData[i].qty_id);
+			if (!success || (qtiesList.GetSize() == 0)) {
+				if (i == El.qties->count - 1) {
+					// last item
+				}
+				else {
+					memmove(
+						&El.qties->qtyData[i - 1],
+						&El.qties->qtyData[i],
+						sizeof(PogoQtyData) * (10 - i)
+					);
+				}
+				El.qties->count--;
+
+				El.UpdateQtiesToElement();
+			}
+		}
+	}
 }
 
 bool PogoElementsList::AttachQty(const PogoItem& item, const GS::UniString& descript, const GS::UniString& formula)
@@ -162,7 +171,7 @@ bool PogoElementsList::UpdateQtyValues()
 			El.qties->qtyData[i].last_value = El.ParseFormula(El.qties->qtyData[i].formula);
 		}
 
-		El.UpdateQties();
+		El.UpdateQtiesToElement();
 	}
 
 	return true;

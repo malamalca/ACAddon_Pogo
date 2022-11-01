@@ -118,15 +118,16 @@
 	// -----------------------------------------------------------------------------
 	// Download Public Webpage
 	// -----------------------------------------------------------------------------
-	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& url, const GS::UniString& data, GS::UniString& result)
+	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& url, const GS::UniString& data, char* &result)
 	{
-		char** buffer = nullptr;
+		char **buffer = nullptr;
 		GS::GSSize bufLen = HttpRequestToBuffer(method, url, data, buffer);
 
 		if (bufLen > 0) {
-			result = GS::UniString(*buffer, bufLen);
+			//result = GS::UniString(*buffer, bufLen);
+			result = *buffer;
 		}
-		BMKillHandle((GS::GSHandle*)&buffer);
+		//BMKillHandle((GS::GSHandle*)&buffer);
 		if (bufLen < 0) {
 			return false;
 		}
@@ -141,7 +142,13 @@
 		return bufLen >= 0;
 	}
 #else
-	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& url, const GS::UniString& data, GS::UniString& result)
+	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& url, const GS::UniString& data)
+	{
+		char* outputData = nullptr;
+		return HttpRequest(method, url, data, outputData);
+	}
+
+	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& url, const GS::UniString& data, char* &result)
 	{
 		using namespace HTTP::Client;
 		using namespace HTTP::MessageHeader;
@@ -168,15 +175,13 @@
 			auth.HandleRequestHeaderFieldCollection(headers);
 			headers.Add(HeaderFieldName::ContentType, "application/x-www-form-urlencoded");
 
-			clientConnection.Send(postRequest, data.ToCStr(), data.GetLength());
+			clientConnection.Send(postRequest, data.ToCStr(GSCharCode::CC_UTF8).Get(), (GS::USize)strlen(data.ToCStr(GSCharCode::CC_UTF8).Get()));
 
 			Response response;
 			GS::IChannelX channel(clientConnection.BeginReceive(response), GS::GetNetworkByteOrderIProtocolX());
 
 			if (response.GetStatusCode() == 200) {
-				result = ReadUniStringAsUTF8(channel, StringSerializationType::NotTerminated);
-
-				DBPrintf("Read %u characters, %u lines \n", result.GetLength());
+				result = ReadCString(channel, StringSerializationType::NotTerminated);
 
 				clientConnection.FinishReceive();
 				clientConnection.Close(false);
@@ -184,7 +189,7 @@
 				return true;
 			}
 			else {
-				DBPrintf("Invalic status code %u \n", response.GetStatusCode());
+				DBPrintf("Invalid status code %u \n", response.GetStatusCode());
 			}
 
 
@@ -196,11 +201,5 @@
 		}
 
 		return false;
-	}
-
-	bool HttpRequest(const HTTP::MessageHeader::Method::Id& method, const GS::UniString& url, const GS::UniString& data)
-	{
-		GS::UniString outputData;
-		return HttpRequest(method, url, data, outputData);
 	}
 #endif

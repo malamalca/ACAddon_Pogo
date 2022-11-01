@@ -20,6 +20,9 @@ void SlabElementFuncs::SetVariables(const API_Element element, CMathParser& MP)
 		MP.AddVariable("Volume", quantity.slab.volume);
 
 		double coreVolume = quantity.slab.volume;
+		if (composites.GetSize() > 0) {
+			coreVolume = 0;
+		}
 		for (UInt32 i = 0; i < composites.GetSize(); i++) {
 			if ((composites[i].flags & APISkin_Core) != 0) {
 				coreVolume += composites[i].volumes;

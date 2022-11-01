@@ -13,6 +13,7 @@
 
 #include	"dlgPogoItemShow.hpp" 
 #include	"PogoTypes.h"
+#include	"PogoElementWithData.hpp"
 #include	"ResourceIDs.h"
 
 //---------------------------- Class PogoItemShowDialog -----------------------
@@ -22,6 +23,8 @@ PogoItemShowDialog::PogoItemShowDialog (PogoItem AItem) :
 
 	btnOk				(GetReference(), btnOkId),
 	btnZoom				(GetReference(), btnZoomId),
+	btnCheck			(GetReference(), btnCheckId),
+	btnSync				(GetReference(), btnSyncId),
 	lblCategorySection  (GetReference(), lblCategorySectionId),
 	lblItemDescription  (GetReference(), lblItemDescriptionId),
 	lblItemQty			(GetReference(), lblItemQtyId),
@@ -41,6 +44,11 @@ PogoItemShowDialog::PogoItemShowDialog (PogoItem AItem) :
 	lblItemQty.SetText(GS::UniString::Printf("%.2f", item.qty));
 	lblItemPrice.SetText(GS::UniString::Printf("%.2f", item.price));
 	lblItemTotal.SetText(GS::UniString::Printf("%.2f", item.price * item.qty));
+
+	QtiesListUpdateColumns();
+
+	qties.FetchByItem(item.id);
+	UpdateQtiesList();
 }
 
 PogoItemShowDialog::~PogoItemShowDialog()
@@ -49,14 +57,20 @@ PogoItemShowDialog::~PogoItemShowDialog()
 	this->DetachFromAllItems(*this);
 }
 
+void PogoItemShowDialog::SetSelectedQty(PogoQtyData qty)
+{
+	for (unsigned short i = 0; i < qties.GetSize(); i++) {
+		if (qties[i].id == qty.qty_id) {
+			lsQties.SelectItem(i + 1);
+		}
+	}
+}
+
 void PogoItemShowDialog::PanelOpened(const DG::PanelOpenEvent& ev)
 {
 	this->SetClientSize(this->GetOriginalClientWidth(), this->GetOriginalClientHeight());
 
-	QtiesListUpdateColumns();
-
-	qties.FetchByItem(item.id);
-	UpdateQtiesList();
+	
 }
 
 void PogoItemShowDialog::ButtonClicked (const DG::ButtonClickEvent& ev)
@@ -66,6 +80,12 @@ void PogoItemShowDialog::ButtonClicked (const DG::ButtonClickEvent& ev)
 	}
 	if (ev.GetSource() == &btnZoom) {
 		this->ZoomToElement();
+	}
+	if (ev.GetSource() == &btnCheck) {
+		this->CheckElements();
+	}
+	if (ev.GetSource() == &btnSync) {
+		this->SyncElements();
 	}
 }
 
@@ -81,7 +101,12 @@ void PogoItemShowDialog::PanelResized(const DG::PanelResizeEvent& ev)
 		lblItemQty.Move(hGrow, 0);
 		lblItemTotal.Move(hGrow, 0);
 
-		btnOk.Move(0, vGrow);
+		btnOk.Move(hGrow, vGrow);
+		btnZoom.Move(0, vGrow);
+		btnCheck.Move(0, vGrow);
+		btnSync.Move(0, vGrow);
+
+		lblItemDescription.Resize(hGrow, 0);
 		lsQties.Resize(hGrow, vGrow);
 		QtiesListUpdateColumns();
 
@@ -139,9 +164,10 @@ void PogoItemShowDialog::QtiesListUpdateColumns()
 void PogoItemShowDialog::UpdateQtiesList()
 {
 	// clear interface
-	for (short i = lsQties.GetItemCount(); i > 0; i--) {
-		lsQties.DeleteItem(i);
-	}
+	//for (short i = lsQties.GetItemCount(); i > 0; i--) {
+	//	lsQties.DeleteItem(i);
+	//}
+	lsQties.DeleteItem(DG::ListBox::AllItems);
 
 	for (const PogoQty& qty : qties) {
 		lsQties.InsertItem(lsQties.GetItemCount() + 1);
@@ -175,6 +201,72 @@ void PogoItemShowDialog::ZoomToElement()
 
 			if (err == NoError) {
 				this->PostCloseRequest(Accept);
+			}
+		}
+	}
+}
+
+void PogoItemShowDialog::CheckElements()
+{
+	GS::Array<short> selectedQties = lsQties.GetSelectedItems();
+	PogoQty qty;
+	PogoElementWithData el;
+
+	for (const short selectedQtyIndex : selectedQties) {
+		qty = qties.Get(selectedQtyIndex - 1);
+		if (!qty.guid.IsEmpty()) {
+			el.guid = APIGuidFromString(qty.guid.ToCStr().Get());
+			if (el.ElementExists()) {
+				el.LoadQtiesFromElement();
+
+				if (el.HasQty(qty.id)) {
+					lsQties.SetTabItemText(selectedQtyIndex, 3, "OK");
+				}
+				else {
+					lsQties.SetTabItemText(selectedQtyIndex, 3, "NoLink");
+				}
+			}
+			else {
+				lsQties.SetTabItemText(selectedQtyIndex, 3, "NoEl");
+			}
+		}
+		else {
+			lsQties.SetTabItemText(selectedQtyIndex, 3, "NoGuid");
+		}
+	}
+}
+
+void PogoItemShowDialog::SyncElements()
+{
+	GS::Array<short> selectedQties = lsQties.GetSelectedItems();
+	PogoQty qty;
+	PogoElementWithData el;
+	PogoQtyData qtyData;
+	GSErrCode			err;
+
+	for (const short selectedQtyIndex : selectedQties) {
+		qty = qties.Get(selectedQtyIndex - 1);
+		if (!qty.guid.IsEmpty()) {
+			el.guid = APIGuidFromString(qty.guid.ToCStr().Get());
+			if (el.ElementExists()) {
+				el.LoadQtiesFromElement();
+
+				qtyData.last_value = qty.qty_value;
+				strncpy(qtyData.descript, qty.descript.ToCStr().Get(), 100);
+				strncpy(qtyData.formula, qty.formula.ToCStr().Get(), 100);
+				strncpy(qtyData.qty_id, qty.id.ToCStr().Get(), 40);
+
+				if (!el.HasQty(qty.id)) {
+					el.AddQty(qtyData);
+				}
+				else {
+					el.UpdateQty(qtyData);
+				}
+				
+				err = ACAPI_CallUndoableCommand("Attach Qties", [&el]() -> GSErrCode {
+					el.UpdateQtiesToElement();
+					return NoError;
+				});
 			}
 		}
 	}

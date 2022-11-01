@@ -26,6 +26,7 @@
 #include	"dlgPogoItemSelect.hpp"
 #include	"dlgPogoQtyFormula.hpp"
 #include	"dlgPogoSettings.hpp"
+#include	"dlgPogoItemShow.hpp"
 #include	"ShowMessage.hpp"
 
 
@@ -113,6 +114,29 @@ void PogoShowItemsSelectDialog()
 	return;
 } // PogoShowItemsSelectDialog
 
+// -----------------------------------------------------------------------------
+// Select item, show quantities, sync pogo qties to elements
+// -----------------------------------------------------------------------------
+void PogoItemDetails()
+{
+	// show dialog
+	PogoItemSelectDialog		itemSelectDialog;
+	if (DBERROR(itemSelectDialog.GetId() == 0)) {
+		return;
+	}
+
+	PogoItem selectedItem;
+	if (itemSelectDialog.Invoke() && itemSelectDialog.GetSelectedPogoItem(selectedItem)) {
+		PogoItemShowDialog itemShowDialog(selectedItem);
+		if (DBERROR(itemShowDialog.GetId() == 0)) {
+			return;
+		}
+
+		itemShowDialog.Invoke();
+	}
+
+	return;
+}
 
 // -----------------------------------------------------------------------------
 // Send all updates to Pogo server
@@ -161,6 +185,29 @@ void PogoDeleteData()
 } // PogoDeleteData
 
 // -----------------------------------------------------------------------------
+// Delete All Qties from selected elements That Does not have PogoQty
+// -----------------------------------------------------------------------------
+void PogoDeleteDetached()
+{
+	PogoElementsList data;
+	data.GetSelectedElements();
+
+	if (data.IsEmpty()) {
+		ShowMessage("No Elements Selected or No Data Attached");
+
+		return;
+	}
+
+	GSErrCode err;
+	err = ACAPI_CallUndoableCommand("Delete detached qties", [&data]() -> GSErrCode {
+		data.DeleteDetachedQties();
+
+		return NoError;
+	});
+} // PogoDeleteData
+
+
+// -----------------------------------------------------------------------------
 // Display Pogo Settings Dialog
 // -----------------------------------------------------------------------------
 void PogoShowSettingsDialog()
@@ -188,16 +235,22 @@ GSErrCode __ACENV_CALL MenuCommandHandler (const API_MenuParams *menuParams)
 				//PogoPalette::GetInstance().Show();
 				PogoShowItemsSelectDialog();
 				break;
-			case 4:
-				PogoSendQties();
-				break;
-			case 5:
-				PogoDeleteData();
-				break;
 			case 2:
 				PogoShowDataDialog();
 				break;
+			case 3:
+				PogoItemDetails();
+				break;
+			case 5:
+				PogoSendQties();
+				break;
+			case 6:
+				PogoDeleteData();
+				break;
 			case 7:
+				PogoDeleteDetached();
+				break;
+			case 9:
 				PogoShowSettingsDialog();
 				break;
 		}

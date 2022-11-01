@@ -14,7 +14,7 @@ class PogoCategoriesList : public GS::Array<PogoCategory>
 	protected:
 		PogoSettings pogoSettings;
 
-		bool ParseXml(GS::UniString XML);
+		bool ParseXml(const char* XML);
 
 	public:
 		PogoCategoriesList();

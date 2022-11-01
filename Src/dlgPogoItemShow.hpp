@@ -40,13 +40,17 @@ protected:
 		lblItemTotalId			= 7,
 		lsQtiesId				= 8,
 		btnZoomId				= 9,
+		btnCheckId				= 10,
+		btnSyncId				= 11,
 	}; 
 
 	DG::LeftText lblCategorySection;
 	DG::LeftText lblItemDescription;
 	DG::Button  btnOk;
 	DG::Button  btnZoom;
-	DG::SingleSelListBox lsQties;
+	DG::Button	btnCheck;
+	DG::Button	btnSync;
+	DG::MultiSelListBox lsQties;
 	DG::RightText lblItemUnit;
 	DG::RightText lblItemQty;
 	DG::RightText lblItemPrice;
@@ -62,10 +66,14 @@ protected:
 public:
 	PogoItemShowDialog(PogoItem AItem);
 	~PogoItemShowDialog();
+
+	void SetSelectedQty(PogoQtyData qty);
 private:
 	void QtiesListUpdateColumns();
 	void UpdateQtiesList();
 	void ZoomToElement();
+	void CheckElements();
+	void SyncElements();
 }; 
 
 #endif // POGO_ITEMSHOW_DIALOG_H

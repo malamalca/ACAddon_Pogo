@@ -12,9 +12,11 @@
 class PogoQtiesList : public GS::Array<PogoQty>
 {
 	public:
+		bool FetchById(const GS::UniString qtyId);
 		bool Fetch(const GS::UniString url);
 		bool FetchByItem(const GS::UniString QtyId);
 	private:
+		short fieldCount = 9;
 		DbField	fieldList[9] = {
 			{"id", DbFT_String},
 			{"descript", DbFT_String},
@@ -27,7 +29,7 @@ class PogoQtiesList : public GS::Array<PogoQty>
 			{"formula", DbFT_String},
 		};
 
-		bool ParseXml(GS::UniString XML);
+		bool ParseXml(const char* XML);
 };
 
 

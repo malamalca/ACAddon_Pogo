@@ -144,9 +144,10 @@ void PogoDataDialog::PopUpChanged(const DG::PopUpChangeEvent& ev)
 
 void PogoDataDialog::UpdateQtiesList()
 {
-	for (short i = lsQties.GetItemCount(); i > 0; i--) {
-		lsQties.DeleteItem(i);
-	}
+	//for (short i = lsQties.GetItemCount(); i > 0; i--) {
+	//	lsQties.DeleteItem(i);
+	//}
+	lsQties.DeleteItem(DG::ListBox::AllItems);
 
 	short selectedIndex = cbElements.GetSelectedItem();
 	if (selectedIndex > 0) {
@@ -208,7 +209,7 @@ void PogoDataDialog::OnSyncQtyClick()
 		// modify data on element
 		GSErrCode			err;
 		err = ACAPI_CallUndoableCommand("Update Qties", [&selectedElement]() -> GSErrCode {
-			if (selectedElement.UpdateQties()) {
+			if (selectedElement.UpdateQtiesToElement()) {
 				return NoError;
 			}
 			return false;
@@ -254,7 +255,7 @@ void PogoDataDialog::OnDeleteQtyClick()
 			selectedElement.qties->count--;
 
 			err = ACAPI_CallUndoableCommand("Delete Qty(es)", [&selectedElement]() -> GSErrCode {
-				if (selectedElement.UpdateQties()) {
+				if (selectedElement.UpdateQtiesToElement()) {
 					return NoError;
 				}
 				return -1;
@@ -287,7 +288,7 @@ void PogoDataDialog::OnEditQtyClick()
 		// modify data on element
 		GSErrCode			err;
 		err = ACAPI_CallUndoableCommand("Update Qties", [&selectedElement]() -> GSErrCode {
-			if (selectedElement.UpdateQties()) {
+			if (selectedElement.UpdateQtiesToElement()) {
 				return NoError;
 			}
 			return -1;
@@ -308,14 +309,21 @@ void PogoDataDialog::OnInfoQtyClick()
 
 	PogoItemsList items;
 	if (items.FetchByQty(selectedQty.qty_id)) {
+		if (items.GetSize() > 0) {
 
-		PogoItemShowDialog itemShowDialog(items.Get(0));
-		if (DBERROR(itemShowDialog.GetId() == 0)) {
-			return;
+			PogoItemShowDialog itemShowDialog(items.Get(0));
+			if (DBERROR(itemShowDialog.GetId() == 0)) {
+				return;
+			}
+
+			itemShowDialog.SetSelectedQty(selectedQty);
+
+			if (itemShowDialog.Invoke()) {
+				PostCloseRequest(Accept);
+			}
 		}
-
-		if (itemShowDialog.Invoke()) {
-			PostCloseRequest(Accept);
+		else {
+			ShowMessage("Item does not exist.");
 		}
 	}
 }

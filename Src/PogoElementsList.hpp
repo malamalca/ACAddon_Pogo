@@ -16,6 +16,7 @@ class PogoElementsList : public GS::Array<PogoElementWithData>
 
 		void GetSelectedElements(bool onlyWithData = false);
 		void DeleteData();
+		void DeleteDetachedQties();
 		bool AttachQty(const PogoItem&, const GS::UniString& descript, const GS::UniString& formula);
 		bool UpdateQtyValues();
 		bool SendUpdate();

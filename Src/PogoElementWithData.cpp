@@ -28,7 +28,7 @@ GS::UniString PogoElementWithData::RESTCreateQty(const PogoItem& item, const GS:
 	postData.Append(GS::UniString::Printf("qty_value_native=%.2f", value));
 
 	// do request
-	GS::UniString XMLData;
+	char* XMLData;
 	bool success = HttpRequest(Method::Post, url, postData, XMLData);
 	if (!success) {
 		return "";
@@ -37,11 +37,10 @@ GS::UniString PogoElementWithData::RESTCreateQty(const PogoItem& item, const GS:
 	return XMLExtractQtyId(XMLData);
 }
 
-GS::UniString PogoElementWithData::XMLExtractQtyId(GS::UniString& XML)
+GS::UniString PogoElementWithData::XMLExtractQtyId(const char* XML)
 {
 	try {
-		const char* xmlData = XML.ToCStr(CC_UTF8).Get();
-		GSXML::DOMReader xmlReader(reinterpret_cast<const unsigned char*>(xmlData), (GS::USize)strlen(xmlData), "response");
+		GSXML::DOMReader xmlReader(reinterpret_cast<const unsigned char*>(XML), (GS::USize)strlen(XML), "response");
 
 		xercesc::DOMElement* root = xmlReader.GetActualNode();
 
@@ -106,11 +105,21 @@ double PogoElementWithData::ParseFormula(const GS::UniString& formula)
 	return 0.0;
 }
 
+bool PogoElementWithData::ElementExists()
+{
+	// get element
+	API_Elem_Head head;
+	BNZeroMemory(&head, sizeof(API_Elem_Head));
+	head.guid = guid;
+
+	return ACAPI_Element_GetHeader(&head) == NoError;
+}
+
 /// <summary>
 /// Store qties list back to ARCHICAD Element
 /// </summary>
 /// <returns></returns>
-bool PogoElementWithData::UpdateQties()
+bool PogoElementWithData::UpdateQtiesToElement()
 {
 	// get element
 	API_Elem_Head head;
@@ -143,3 +152,76 @@ bool PogoElementWithData::UpdateQties()
 
 	return false;
 }
+
+bool PogoElementWithData::LoadQtiesFromElement()
+{
+	qties = nullptr;
+
+	API_ElementUserData userData;
+	BNZeroMemory(&userData, sizeof(API_ElementUserData));
+
+	API_Elem_Head head;
+	BNZeroMemory(&head, sizeof(API_Elem_Head));
+	head.guid = guid;
+
+	bool hasData = false;
+	if (ACAPI_Element_GetUserData(&head, &userData) == NoError) {
+		if (userData.dataHdl != nullptr && userData.platformSign == GS::Act_Platform_Sign) {
+			qties = new PogoLinkedQties();
+			BNZeroMemory(qties, sizeof(PogoLinkedQties));
+			BNCopyMemory(qties, *(userData.dataHdl), sizeof(PogoLinkedQties));
+			BMKillHandle(&userData.dataHdl);
+
+			hasData = true;
+		}
+	}
+
+	return hasData;
+}
+
+bool PogoElementWithData::HasQty(const GS::UniString& id)
+{
+	if (!qties) {
+		return false;
+	}
+	for (short i = 0; i < qties->count; i++) {
+		if (qties->qtyData[i].qty_id == id) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool   PogoElementWithData::AddQty(const PogoQtyData qtyData)
+{
+	if (!qties) {
+		qties = new PogoLinkedQties();
+		qties->count = 0;
+	}
+
+	if (qties->count < 10) {
+		qties->count++;
+		qties->qtyData[qties->count - 1] = qtyData;
+
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool PogoElementWithData::UpdateQty(const PogoQtyData qtyData)
+{
+	if (!qties) {
+		return false;
+	}
+	for (short i = 0; i < qties->count; i++) {
+		if (strcmp(qties->qtyData[i].qty_id, qtyData.qty_id)==0) {
+			qties->qtyData[i] = qtyData;
+			return true;
+		}
+	}
+
+	return false;
+}
+

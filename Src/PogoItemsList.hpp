@@ -21,7 +21,7 @@ class PogoItemsList : public GS::Array<PogoItem>
 		bool FetchBySection(const GS::UniString SectionId);
 		bool FetchByQty(const GS::UniString QtyId);
 	private:
-		bool ParseXml(GS::UniString XML);
+		bool ParseXml(const char* XML);
 };
 
 

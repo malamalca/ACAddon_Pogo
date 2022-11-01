@@ -120,9 +120,10 @@ void PogoItemSelectDialog::ButtonClicked (const DG::ButtonClickEvent& ev)
 void PogoItemSelectDialog::UpdateCategories()
 {
 	// clear interface
-	for (short i = this->cbCategory.GetItemCount(); i > 0; i--) {
-		this->cbCategory.DeleteItem(i);
-	}
+	//for (short i = this->cbCategory.GetItemCount(); i > 0; i--) {
+	//	this->cbCategory.DeleteItem(i);
+	//}
+	cbCategory.DeleteItem(DG::PopUp::AllItems);
 
 	this->cbCategory.DisableDraw();
 
@@ -140,9 +141,10 @@ void PogoItemSelectDialog::UpdateCategories()
 
 void PogoItemSelectDialog::UpdateSections()
 {
-	for (short i = cbSection.GetItemCount(); i > 0; i--) {
-		cbSection.DeleteItem(i);
-	}
+	//for (short i = cbSection.GetItemCount(); i > 0; i--) {
+	//	cbSection.DeleteItem(i);
+	//}
+	cbSection.DeleteItem(DG::PopUp::AllItems);
 
 	short selectedCategory = cbCategory.GetSelectedItem();
 
@@ -163,9 +165,11 @@ void PogoItemSelectDialog::UpdateSections()
 
 void PogoItemSelectDialog::UpdateItems()
 {
-	for (short i = lsItems.GetItemCount(); i > 0; i--) {
-		lsItems.DeleteItem(i);
-	}
+	//for (short i = lsItems.GetItemCount(); i > 0; i--) {
+	//	lsItems.DeleteItem(i);
+	//}
+	lsItems.DeleteItem(DG::ListBox::AllItems);
+
 	items.Clear();
 
 	short selectedCategory = cbCategory.GetSelectedItem();
@@ -231,7 +235,7 @@ void PogoItemSelectDialog::ListBoxTabFieldUpdate(const DG::ListBoxTabItemUpdateE
 		switch (ev.GetTabFieldIndex()) {
 			case 2:
 				if (item % 2 && lsItems.GetSelectedItem() != item) {
-					context.FillRect(0, 0, (float)width - 1, (float)height - 1, 250, 250, 250);
+					context.FillRect(0, 0, (float)width - 1, (float)height - 1, 240, 240, 240);
 				}
 
 				context.SetForeColor(Gfx::Color::Black);
@@ -242,4 +246,9 @@ void PogoItemSelectDialog::ListBoxTabFieldUpdate(const DG::ListBoxTabItemUpdateE
 				break;
 		}
 	}
+}
+
+void PogoItemSelectDialog::ListBoxDoubleClicked(const DG::ListBoxDoubleClickEvent& ev)
+{
+	this->PostCloseRequest(Accept);
 }

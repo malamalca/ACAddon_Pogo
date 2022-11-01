@@ -20,6 +20,9 @@ void RoofElementFuncs::SetVariables(const API_Element element, CMathParser& MP)
 		MP.AddVariable("Volume", quantity.roof.volume);
 
 		double coreVolume = quantity.roof.volume;
+		if (composites.GetSize() > 0) {
+			coreVolume = 0;
+		}
 		for (UInt32 i = 0; i < composites.GetSize(); i++) {
 			if ((composites[i].flags & APISkin_Core) != 0) {
 				coreVolume += composites[i].volumes;

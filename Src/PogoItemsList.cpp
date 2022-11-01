@@ -38,10 +38,10 @@ bool PogoItemsList::FetchByQty(const GS::UniString QtyId)
 
 bool PogoItemsList::Fetch(const GS::UniString url)
 {
-	GS::UniString XMLData;
+	char* XMLData = nullptr;
 	bool success = HttpRequest(HTTP::MessageHeader::Method::Get, url, "", XMLData);
 
-	if (!success || XMLData.IsEmpty()) {
+	if (!success || strlen(XMLData) == 0) {
 		ShowMessage("Cannot fetch Items.");
 		return false;
 	}
@@ -55,12 +55,11 @@ bool PogoItemsList::Fetch(const GS::UniString url)
 	}
 }
 
-bool PogoItemsList::ParseXml(GS::UniString XML)
+bool PogoItemsList::ParseXml(const char* XML)
 {
 	Clear();
 	try {
-		const char* xmlData = XML.ToCStr(CC_UTF8).Get();
-		GSXML::DOMReader xmlReader(reinterpret_cast<const unsigned char*>(xmlData), (GS::USize)strlen(xmlData), "items");
+		GSXML::DOMReader xmlReader(reinterpret_cast<const unsigned char*>(XML), (GS::USize)strlen(XML), "items");
 
 		xercesc::DOMElement* root = xmlReader.GetActualNode();
 

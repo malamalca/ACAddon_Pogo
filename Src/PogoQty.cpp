@@ -7,7 +7,7 @@ void PogoQty::SetValue(const GS::UniString name, const GS::UniString value)
 	if (name == "aux_formula") aux_formula = value;
 	if (name == "qty_formula") qty_formula = value;
 	if (name == "guid") guid = value;
-	if (name == "formula") guid = value;
+	if (name == "formula") formula = value;
 }
 
 void PogoQty::SetValue(const GS::UniString name, const int value)

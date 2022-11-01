@@ -20,11 +20,13 @@
 /* [   ] */		"Commands"
 /* [  1] */			"Attach New Qty^E3^ES^EE^EI^ET^EM"
 /* [  2] */			"Show Associated Qties^E3^ES^EE^EI^ET^EM"
-/* [  3] */			"-"
-/* [  4] */			"Send Qties Updates^E3^ES^EE^EI^ET^EM"
-/* [  5] */			"Delete Assoc Qties^E3^ES^EE^EI^ET^EM"
-/* [  6] */			"-"
-/* [  7] */			"Settings^E3^ES^EE^EI^ET^EM"
+/* [  3] */			"Show Item Details^E3^ES^EE^EI^ET^EM"
+/* [  4] */			"-"
+/* [  5] */			"Send Qties Updates^E3^ES^EE^EI^ET^EM"
+/* [  6] */			"Delete All Assoc Qties^E3^ES^EE^EI^ET^EM"
+/* [  7] */			"Delete Detached Qties^E3^ES^EE^EI^ET^EM"
+/* [  8] */			"-"
+/* [  9] */			"Settings^E3^ES^EE^EI^ET^EM"
 }
 
 'STR#' ID_MENU_PROMPT_STRINGS "Prompt strings" {
@@ -32,11 +34,13 @@
 /* [   ] */		"Commands"
 /* [  1] */			"Add new qty to a pogo item"
 /* [  2] */			"Show associated qties dialog"
-/* [  3] */			"-"
-/* [  4] */			"Send qties updates to pogo"
-/* [  5] */			"Delete attached qties from selected elements"
-/* [  6] */			"-"
-/* [  7] */			"Show settings dialog"
+/* [  3] */			"Select item and display attached qties"
+/* [  4] */			"-"
+/* [  5] */			"Send qties updates to pogo"
+/* [  6] */			"Delete all qties from selected elements"
+/* [  7] */			"Delete dettached qties from selected elements"
+/* [  8] */			"-"
+/* [  9] */			"Show settings dialog"
 }
 
 /* *****************************************************************************
@@ -52,6 +56,8 @@
 /* [  7] */	RightText         335  80    40   18    LargeBold   vTop  ""					/* Item Total */
 /* [  8] */ MultiSelList      5   100   390  220    LargePlain  PartialItems VScroll 25 HasHeader 25
 /* [  9] */ Button            5   350    30   30    LargePlain  "Zoom"						/* Zoom To Element Button */
+/* [ 10] */ Button            40  350    30   30    LargePlain  "Check"						/* Check Qty Button */
+/* [ 11] */ Button            75  350    30   30    LargePlain  "Sync"						/* Check Qty Button */
 }
 
 'DLGH'  ID_POGO_ITEMSHOW_MODAL  DLG_ITEMSHOW_Help {
@@ -62,7 +68,10 @@
 5	""							RightText_2
 6	""							RightText_3
 7	""							RightText_4
-8	""							SingleSelList_1
+8	""							MultiSelList_1
+9	""							Button_2
+10	""							Button_3
+11	""							Button_4
 }
 
 /* *****************************************************************************

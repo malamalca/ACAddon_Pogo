@@ -246,11 +246,8 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <Library Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Include="..\..\..\Support\Lib\Win\ACAP_STAT.lib">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </Library>
     <Library Include="..\..\..\Support\Lib\Win\ACAP_STAT.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Library>
     <Library Include="..\..\..\Support\Lib\Win\ACAP_STATD.lib">
