@@ -15,6 +15,8 @@ class PogoQtiesList : public GS::Array<PogoQty>
 		bool FetchById(const GS::UniString qtyId);
 		bool Fetch(const GS::UniString url);
 		bool FetchByItem(const GS::UniString QtyId);
+
+		bool Delete();
 	private:
 		short fieldCount = 9;
 		DbField	fieldList[9] = {

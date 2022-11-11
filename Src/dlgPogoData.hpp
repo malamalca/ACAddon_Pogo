@@ -53,7 +53,10 @@ protected:
 
 	virtual void	PanelOpened(const DG::PanelOpenEvent& ev) override;
 	virtual void	ButtonClicked(const DG::ButtonClickEvent& ev)	override;
+	
 	virtual void	ListBoxSelectionChanged(const DG::ListBoxSelectionEvent& ev) override;
+	virtual void	ListBoxDoubleClicked(const DG::ListBoxDoubleClickEvent& ev);
+
 	virtual void	PanelHotkeyPressed(const DG::PanelHotKeyEvent& ev, bool* processed) override;
 	virtual void	PopUpChanged(const DG::PopUpChangeEvent& ev) override;
 

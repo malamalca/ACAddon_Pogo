@@ -25,6 +25,7 @@ PogoItemShowDialog::PogoItemShowDialog (PogoItem AItem) :
 	btnZoom				(GetReference(), btnZoomId),
 	btnCheck			(GetReference(), btnCheckId),
 	btnSync				(GetReference(), btnSyncId),
+	btnDelete			(GetReference(), btnDeleteId),
 	lblCategorySection  (GetReference(), lblCategorySectionId),
 	lblItemDescription  (GetReference(), lblItemDescriptionId),
 	lblItemQty			(GetReference(), lblItemQtyId),
@@ -37,7 +38,8 @@ PogoItemShowDialog::PogoItemShowDialog (PogoItem AItem) :
 	AttachToAllItems(*this);
 	Attach (*this);
 
-	QtiesListUpdateColumns();
+	// initialize hotkeys
+	KeyID_ESC = this->RegisterHotKey(DG_KEY_ESCAPE);
 
 	lblItemDescription.SetText(item.descript);
 	lblItemUnit.SetText(item.unit);
@@ -87,6 +89,9 @@ void PogoItemShowDialog::ButtonClicked (const DG::ButtonClickEvent& ev)
 	if (ev.GetSource() == &btnSync) {
 		this->SyncElements();
 	}
+	if (ev.GetSource() == &btnDelete) {
+		this->DeleteQties();
+	}
 }
 
 void PogoItemShowDialog::PanelResized(const DG::PanelResizeEvent& ev)
@@ -113,6 +118,16 @@ void PogoItemShowDialog::PanelResized(const DG::PanelResizeEvent& ev)
 		EndMoveResizeItems();
 
 		lsQties.Redraw();
+	}
+}
+
+void PogoItemShowDialog::PanelHotkeyPressed(const DG::PanelHotKeyEvent& ev, bool* processed)
+{
+	short keyId = ev.GetKeyId();
+
+	if (keyId == KeyID_ESC) {
+		*processed = true;
+		PostCloseRequest(Cancel);
 	}
 }
 
@@ -164,9 +179,6 @@ void PogoItemShowDialog::QtiesListUpdateColumns()
 void PogoItemShowDialog::UpdateQtiesList()
 {
 	// clear interface
-	//for (short i = lsQties.GetItemCount(); i > 0; i--) {
-	//	lsQties.DeleteItem(i);
-	//}
 	lsQties.DeleteItem(DG::ListBox::AllItems);
 
 	for (const PogoQty& qty : qties) {
@@ -181,27 +193,33 @@ void PogoItemShowDialog::UpdateQtiesList()
 
 void PogoItemShowDialog::ZoomToElement()
 {
-	short selectedQty = lsQties.GetSelectedItem();
+	GS::Array<short> selectedQties = lsQties.GetSelectedItems();
 
-	if (selectedQty >= 0) {
-		PogoQty qty = qties.Get(selectedQty - 1);
+	PogoQty qty;
+	GS::Array<API_Guid> guids;
+	GSErrCode err;
+
+	for (const short selectedQtyIndex : selectedQties) {
+		qty = qties.Get(selectedQtyIndex - 1);
 		if (!qty.guid.IsEmpty()) {
-			API_Guid tmpGuid = APIGuidFromString(qty.guid.ToCStr().Get());
-			GS::Array<API_Guid> guids = {tmpGuid};
-			GSErrCode err;
+			guids.Push(APIGuidFromString(qty.guid.ToCStr().Get()));
+		}
+	}
 
-			err = ACAPI_Automate(
-				APIDo_ZoomToElementsID,
-				&guids
-			);
+	if (guids.GetSize() > 0) {
+		err = ACAPI_Automate(
+			APIDo_ZoomToElementsID,
+			&guids
+		);
 
-			GS::Array<API_Neig> neigs;
+		GS::Array<API_Neig> neigs;
+		for (API_Guid tmpGuid : guids) {
 			neigs.PushNew(tmpGuid);
-			err = ACAPI_Element_Select(neigs, true);
+		}
+		err = ACAPI_Element_Select(neigs, true);
 
-			if (err == NoError) {
-				this->PostCloseRequest(Accept);
-			}
+		if (err == NoError) {
+			this->PostCloseRequest(Accept);
 		}
 	}
 }
@@ -269,5 +287,23 @@ void PogoItemShowDialog::SyncElements()
 				});
 			}
 		}
+	}
+}
+
+void PogoItemShowDialog::DeleteQties()
+{
+	GS::Array<short>	selectedQtiesIndex = lsQties.GetSelectedItems();
+	PogoQtiesList		selectedQties;
+	PogoQty				qty;
+
+	for (const short selectedQtyIndex : selectedQtiesIndex) {
+		selectedQties.Push(qties.Get(selectedQtyIndex - 1));
+	}
+
+	if (selectedQties.Delete()) {
+		// reload list
+		qties.Clear();
+		qties.FetchByItem(item.id);
+		UpdateQtiesList();
 	}
 }

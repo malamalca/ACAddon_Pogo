@@ -125,6 +125,11 @@ void PogoDataDialog::ListBoxSelectionChanged(const DG::ListBoxSelectionEvent&)
 	UpdateInterface();
 }
 
+void PogoDataDialog::ListBoxDoubleClicked(const DG::ListBoxDoubleClickEvent& ev)
+{
+	OnEditQtyClick();
+}
+
 void PogoDataDialog::PanelHotkeyPressed(const DG::PanelHotKeyEvent& ev, bool* processed)
 {
 	short keyId = ev.GetKeyId();

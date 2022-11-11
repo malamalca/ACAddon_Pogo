@@ -42,6 +42,7 @@ protected:
 		btnZoomId				= 9,
 		btnCheckId				= 10,
 		btnSyncId				= 11,
+		btnDeleteId				= 12,
 	}; 
 
 	DG::LeftText lblCategorySection;
@@ -50,6 +51,7 @@ protected:
 	DG::Button  btnZoom;
 	DG::Button	btnCheck;
 	DG::Button	btnSync;
+	DG::Button	btnDelete;
 	DG::MultiSelListBox lsQties;
 	DG::RightText lblItemUnit;
 	DG::RightText lblItemQty;
@@ -62,6 +64,7 @@ protected:
 
 	virtual void	PanelOpened(const DG::PanelOpenEvent& ev) override;
 	virtual void    PanelResized(const DG::PanelResizeEvent& ev) override;
+	virtual void	PanelHotkeyPressed(const DG::PanelHotKeyEvent& ev, bool* processed) override;
 	virtual void	ButtonClicked(const DG::ButtonClickEvent& ev)	override;
 public:
 	PogoItemShowDialog(PogoItem AItem);
@@ -69,11 +72,14 @@ public:
 
 	void SetSelectedQty(PogoQtyData qty);
 private:
+	short KeyID_ESC;
+
 	void QtiesListUpdateColumns();
 	void UpdateQtiesList();
 	void ZoomToElement();
 	void CheckElements();
 	void SyncElements();
+	void DeleteQties();
 }; 
 
 #endif // POGO_ITEMSHOW_DIALOG_H

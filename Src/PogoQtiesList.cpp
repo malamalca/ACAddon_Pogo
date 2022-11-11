@@ -20,6 +20,26 @@ bool PogoQtiesList::FetchByItem(const GS::UniString ItemId)
 	return Fetch("/qties/index/" + ItemId + ".xml");
 }
 
+bool PogoQtiesList::Delete()
+{
+	GS::UniString url = "/qties/delete.xml";
+	GS::UniString postData;
+	PogoQty qty;
+
+	for (unsigned short i = 0; i < GetSize(); i++) {
+		if (!postData.IsEmpty()) {
+			postData.Append("&");
+		}
+		qty = Get(i);
+
+		postData.Append(GS::UniString::Printf("%d[id]=%s", i, qty.id.ToCStr().Get()));
+	}
+
+	bool success = HttpRequest(HTTP::MessageHeader::Method::Post, url, postData);
+
+	return success;
+}
+
 bool PogoQtiesList::FetchById(const GS::UniString qtyId)
 {
 	return Fetch("/qties/view/" + qtyId + ".xml");

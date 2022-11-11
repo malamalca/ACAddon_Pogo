@@ -85,7 +85,7 @@ void PogoItemSelectDialog::ItemListUpdateColumns()
 
 void PogoItemSelectDialog::PanelOpened(const DG::PanelOpenEvent& ev)
 {
-	this->SetClientSize(this->GetOriginalClientWidth(), this->GetOriginalClientHeight());
+	//this->SetClientSize(this->GetOriginalClientWidth(), this->GetOriginalClientHeight());
 
 	PogoSettings::LoadPogoSettingsFromPreferences(this->pogoSettings);
 
@@ -120,9 +120,6 @@ void PogoItemSelectDialog::ButtonClicked (const DG::ButtonClickEvent& ev)
 void PogoItemSelectDialog::UpdateCategories()
 {
 	// clear interface
-	//for (short i = this->cbCategory.GetItemCount(); i > 0; i--) {
-	//	this->cbCategory.DeleteItem(i);
-	//}
 	cbCategory.DeleteItem(DG::PopUp::AllItems);
 
 	this->cbCategory.DisableDraw();
@@ -141,9 +138,6 @@ void PogoItemSelectDialog::UpdateCategories()
 
 void PogoItemSelectDialog::UpdateSections()
 {
-	//for (short i = cbSection.GetItemCount(); i > 0; i--) {
-	//	cbSection.DeleteItem(i);
-	//}
 	cbSection.DeleteItem(DG::PopUp::AllItems);
 
 	short selectedCategory = cbCategory.GetSelectedItem();
@@ -165,9 +159,6 @@ void PogoItemSelectDialog::UpdateSections()
 
 void PogoItemSelectDialog::UpdateItems()
 {
-	//for (short i = lsItems.GetItemCount(); i > 0; i--) {
-	//	lsItems.DeleteItem(i);
-	//}
 	lsItems.DeleteItem(DG::ListBox::AllItems);
 
 	items.Clear();
@@ -184,7 +175,7 @@ void PogoItemSelectDialog::UpdateItems()
 		if (items.FetchBySection(categories.Get(selectedCategory - 1).sections.Get(selectedSection - 1).id)) {
 			for (short i = 0; i < (short)items.GetSize(); i++) {
 				lsItems.InsertItem(i + 1);
-				lsItems.SetTabItemText(i + 1, 1, "");
+				lsItems.SetTabItemText(i + 1, 1, GS::UniString::Printf("%u", i+1));
 				lsItems.SetTabItemText(i + 1, 2, items.Get(i).descript);
 			}
 		}

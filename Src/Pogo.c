@@ -31,9 +31,9 @@
 
 
 // -----------------------------------------------------------------------------
-// Display Pogo Dialog and prompt user for input
+// Show qty management dialog for selected Elements
 // -----------------------------------------------------------------------------
-void PogoShowDataDialog ()
+void PogoShowQtyManagerDialog ()
 {
 	PogoElementsList	data;
 
@@ -53,12 +53,12 @@ void PogoShowDataDialog ()
 	dialog.Invoke ();
 
 	return;
-} // Show_PogoDataDialog
+} // PogoShowQtyManagerDialog
 
 // -----------------------------------------------------------------------------
-// Display Pogo Items Select Dialog and prompt user for input
+// Attach qty to selected elements. Also creates qties on Pogo.si
 // -----------------------------------------------------------------------------
-void PogoShowItemsSelectDialog()
+void PogoAttachQty()
 {
 	PogoElementsList selectedElements;
 	selectedElements.GetSelectedElements(false);
@@ -112,10 +112,10 @@ void PogoShowItemsSelectDialog()
 	}
 
 	return;
-} // PogoShowItemsSelectDialog
+} // PogoAttachQty
 
 // -----------------------------------------------------------------------------
-// Select item, show quantities, sync pogo qties to elements
+// Select Pogo.si item, show Pogo.si qties, sync pogo qties to elements
 // -----------------------------------------------------------------------------
 void PogoItemDetails()
 {
@@ -136,7 +136,7 @@ void PogoItemDetails()
 	}
 
 	return;
-}
+} // PogoItemDetails
 
 // -----------------------------------------------------------------------------
 // Send all updates to Pogo server
@@ -163,7 +163,7 @@ void PogoSendQties()
 } // PogoSendQties
 
 // -----------------------------------------------------------------------------
-// Delete All Associated Qties from Elelents
+// Delete All Associated Qties from Elements
 // -----------------------------------------------------------------------------
 void PogoDeleteData()
 {
@@ -185,7 +185,7 @@ void PogoDeleteData()
 } // PogoDeleteData
 
 // -----------------------------------------------------------------------------
-// Delete All Qties from selected elements That Does not have PogoQty
+// Delete all qties from selected elements that do not exists on Pogo.si
 // -----------------------------------------------------------------------------
 void PogoDeleteDetached()
 {
@@ -204,7 +204,7 @@ void PogoDeleteDetached()
 
 		return NoError;
 	});
-} // PogoDeleteData
+} // PogoDeleteDetached
 
 
 // -----------------------------------------------------------------------------
@@ -233,10 +233,10 @@ GSErrCode __ACENV_CALL MenuCommandHandler (const API_MenuParams *menuParams)
 		switch (menuParams->menuItemRef.itemIndex) {
 			case 1:
 				//PogoPalette::GetInstance().Show();
-				PogoShowItemsSelectDialog();
+				PogoAttachQty();
 				break;
 			case 2:
-				PogoShowDataDialog();
+				PogoShowQtyManagerDialog();
 				break;
 			case 3:
 				PogoItemDetails();

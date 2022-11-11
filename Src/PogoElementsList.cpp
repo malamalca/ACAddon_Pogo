@@ -54,7 +54,7 @@ void PogoElementsList::GetSelectedElements(bool onlyWithData)
 }
 
 //
-// Must Be Called Inside ACAPI_CallUndoableCommand
+// Delete all PogoData from selected elements
 // 
 void PogoElementsList::DeleteData()
 {
@@ -62,40 +62,47 @@ void PogoElementsList::DeleteData()
 	QtiesList elementsQties;
 
 	for (const PogoElementWithData& El : *this) {
-		for (short i = 0; i < (short)El.qties->count; i++) {
-			elementsQties.Insert(elementsQties.GetSize(), El.qties->qtyData[i]);
+		if (El.qties) {
+			for (short i = 0; i < (short)El.qties->count; i++) {
+				elementsQties.Insert(elementsQties.GetSize(), El.qties->qtyData[i]);
+			}
+
+			BNZeroMemory(&head, sizeof(API_Elem_Head));
+			head.guid = El.guid;
+
+			ACAPI_Element_DeleteUserData(&head);
 		}
-
-		BNZeroMemory(&head, sizeof(API_Elem_Head));
-		head.guid = El.guid;
-
-		ACAPI_Element_DeleteUserData(&head);
 	}
 
 	elementsQties.RESTDelete();
 }
 
+//
+// Delete selected elements' qties that do not exist on Pogo.si
+// 
 void PogoElementsList::DeleteDetachedQties()
 {
 	PogoQtiesList qtiesList;
 
 	for (PogoElementWithData& El : *this) {
-		for (short i = (short)El.qties->count-1; i >= 0; i--) {
-			bool success = qtiesList.FetchById(El.qties->qtyData[i].qty_id);
-			if (!success || (qtiesList.GetSize() == 0)) {
-				if (i == El.qties->count - 1) {
-					// last item
-				}
-				else {
-					memmove(
-						&El.qties->qtyData[i - 1],
-						&El.qties->qtyData[i],
-						sizeof(PogoQtyData) * (10 - i)
-					);
-				}
-				El.qties->count--;
+		if (El.qties) {
+			for (short i = (short)El.qties->count - 1; i >= 0; i--) {
+				bool success = qtiesList.FetchById(El.qties->qtyData[i].qty_id);
+				if (!success || (qtiesList.GetSize() == 0)) {
+					if (i == El.qties->count - 1) {
+						// last item
+					}
+					else {
+						memmove(
+							&El.qties->qtyData[i - 1],
+							&El.qties->qtyData[i],
+							sizeof(PogoQtyData) * (10 - i)
+						);
+					}
+					El.qties->count--;
 
-				El.UpdateQtiesToElement();
+					El.UpdateQtiesToElement();
+				}
 			}
 		}
 	}
@@ -164,6 +171,9 @@ bool PogoElementsList::AttachQty(const PogoItem& item, const GS::UniString& desc
 	return true;
 }
 
+//
+// Update Elements' qties values
+// 
 bool PogoElementsList::UpdateQtyValues()
 {
 	for (PogoElementWithData& El : *this) {

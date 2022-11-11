@@ -55,9 +55,10 @@
 /* [  6] */	RightText         290  80    40   18    LargeBold   vTop  ""					/* Item Price */
 /* [  7] */	RightText         335  80    40   18    LargeBold   vTop  ""					/* Item Total */
 /* [  8] */ MultiSelList      5   100   390  220    LargePlain  PartialItems VScroll 25 HasHeader 25
-/* [  9] */ Button            5   350    30   30    LargePlain  "Zoom"						/* Zoom To Element Button */
-/* [ 10] */ Button            40  350    30   30    LargePlain  "Check"						/* Check Qty Button */
-/* [ 11] */ Button            75  350    30   30    LargePlain  "Sync"						/* Check Qty Button */
+/* [  9] */ Button            5   350    35   30    LargePlain  "Zoom"						/* Zoom To Element Button */
+/* [ 10] */ Button            45  350    35   30    LargePlain  "Check"						/* Check Qty Button */
+/* [ 11] */ Button            85  350    35   30    LargePlain  "Sync"						/* Sync Qty Button */
+/* [ 12] */ Button            125 350    35   30    LargePlain  "Del"						/* Del Qty Button */
 }
 
 'DLGH'  ID_POGO_ITEMSHOW_MODAL  DLG_ITEMSHOW_Help {
@@ -72,6 +73,7 @@
 9	""							Button_2
 10	""							Button_3
 11	""							Button_4
+12	""							Button_5
 }
 
 /* *****************************************************************************
@@ -167,7 +169,7 @@
 /* [  5] */	LeftText          5   85   150   15    LargePlain  vCenter  "Username:"
 /* [  6] */	TextEdit          5   100   390   20    LargePlain  36							/* Username Input */
 /* [  7] */	LeftText          5   125  150   15    LargePlain  vCenter  "Password:"
-/* [  8] */	TextEdit          5   140  390   20    LargePlain  36							/* Password Input */
+/* [  8] */	PasswordEdit      5   140  390   20    LargePlain  36							/* Password Input */
 /* [  9] */ Button            5   175   50   30    LargePlain  "Ok"							/* OK Button */
 /* [ 10] */ Button            60  175   50   30    LargePlain  "Cancel"						/* Cancel Button */
 }
